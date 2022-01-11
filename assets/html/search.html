@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Wolves a la Carte Search</title>
@@ -13,11 +13,59 @@
 
 <body>
     <div class="columns">
+        <!-- This will contain the previous searches. -->
         <aside class="column is-one-third">
 
         </aside>
+        
+        <!-- This will contain the searchbar and results. -->
         <main class="column is-two-thirds">
+            <!-- Add search bar here. -->
             
+            <!-- This contains the search result cards. -->
+            <div class="columns is-multiline">
+                <div class="column is-half">
+                    <div class="card" id="search-result-display-1">
+                        <div class="card-image">
+                            <img src="https://spoonacular.com/recipeImages/716429-312x231.jpg" alt="example-card">
+                        </div>
+                        <div class="card-content">
+                            <div class="content">Test Recipe</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="card" id="search-result-display-2">
+                        <div class="card-image">
+                            <img src="https://spoonacular.com/recipeImages/716429-312x231.jpg" alt="example-card">
+                        </div>
+                        <div class="card-content">
+                            <div class="content">Test Recipe</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="card" id="search-result-display-3">
+                        <div class="card-image">
+                            <img src="https://spoonacular.com/recipeImages/716429-312x231.jpg" alt="example-card">
+                        </div>
+                        <div class="card-content">
+                            <div class="content">Test Recipe</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="card" id="search-result-display-4">
+                        <div class="card-image">
+                            <img src="https://spoonacular.com/recipeImages/716429-312x231.jpg" alt="example-card">
+                        </div>
+                        <div class="card-content">
+                            <div class="content">Test Recipe</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
