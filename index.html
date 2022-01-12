@@ -7,11 +7,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- Added fontawesome - Ezequiel -->
+    <script src="https://kit.fontawesome.com/05eafdd4dc.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Wolves a la Carte</title>
 </head>
 
 <body>
+    <!-- Added header - Ezequiel -->
+    <header>
+        <nav class="navbar is-success is-spaced" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a href="#"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
+                <h1 class="navbar-item is-size-2">a La Carte</h1>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
+                <a class="nav-link">
+                    Favorite Recipes
+                </a>
+                
+                <div class="navbar-dropdown" id="favorites-dropdown">
+                    <a class="navbar-item">Placholder</a>
+                    <a class="navbar-item">Testing</a>
+                    <a class="navbar-item">Testing</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
