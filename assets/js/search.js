@@ -32,6 +32,36 @@ function testSpoon() {
             console.log(data);
         });
 }
+// --------------- SpoonApi Calls --------------- //
+function searchRecipes(searchText) {
+    let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=${searchText}&number=4`;
+    fetch(url)
+        .then(function (response) {
+            if (response.status === 401) {
+                console.log("You failed!");
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            // Call card render function.
+        });
+}
+
+function findRecipeInfo(recipeID) {
+    let url = ` https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=${spoonKey}&includeNutrition=false`;
+    fetch(url)
+        .then(function (response) {
+            if (response.status === 401) {
+                console.log("You failed!");
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            // Call card or modal function.
+        });
+}
 
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
