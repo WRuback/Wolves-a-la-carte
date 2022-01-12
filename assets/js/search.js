@@ -63,6 +63,16 @@ function findRecipeInfo(recipeID) {
         });
 }
 
+// --------------- Recipe call on submit click - Billy ------------------
+$(function(){
+    $("#search-bar-submit").on("click", function(event){
+        event.preventDefault();
+        let searchParameter = $("#search-bar").val();
+        searchRecipes(searchParameter);
+        $("#search-bar").val("");
+    })
+});
+
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
