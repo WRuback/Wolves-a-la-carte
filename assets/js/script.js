@@ -1,3 +1,22 @@
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+// Autocomplete on searchbar.
+$(function () {
+    $("#search-bar").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
+                dataType: "json",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            value: item.title
+                        };
+                    }));
+                }
+            });
+        }
+    });
+});
 
 function krogerOAuth(productsArray) {
     var settings = {
