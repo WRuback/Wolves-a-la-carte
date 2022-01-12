@@ -66,6 +66,13 @@ function findRecipeInfo(recipeID) {
 
 // --------------- Recipe call on submit click - Billy ------------------
 $(function(){
+    // Load recipe search.
+    let loadSearch = document.location.search;
+    if(loadSearch){
+        let recipeSearch = loadSearch.split("=")[1];
+        searchRecipes(recipeSearch);
+    }
+
     $("#search-bar-submit").on("click", function(event){
         event.preventDefault();
         let searchParameter = $("#search-bar").val();

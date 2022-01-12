@@ -18,6 +18,17 @@ $(function () {
     });
 });
 
+// Going to the search page from the search button.
+$(function () {
+    $("#search-bar-submit").on("click", function(event){
+        event.preventDefault();
+        let searchParameter = $("#search-bar").val();
+        if(searchParameter !== ""){
+          window.location.href = `./assets/html/search.html?search=${searchParameter}`;
+        }
+    })
+});
+
 var favoritedItems = [];
 
 function pullFavorites() {
