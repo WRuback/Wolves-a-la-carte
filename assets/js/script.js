@@ -1,3 +1,9 @@
+var favoritedItems = [];
+
+function pullFavorites() {
+    var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
+    pulledFavorites !== null? favoritedItems = pulledFavorites : null;
+}
 
 function krogerOAuth(productsArray) {
     var settings = {
