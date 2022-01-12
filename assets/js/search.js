@@ -15,8 +15,6 @@ function testSpoon(){
         });
 }
 
-testSpoon();
-
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
@@ -63,3 +61,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+//testSpoon();
