@@ -26,7 +26,7 @@
                 <a class="nav-link">
                     Favorite Recipes
                 </a>
-                
+
                 <div class="navbar-dropdown" id="favorites-dropdown">
                     <a class="navbar-item">Placholder</a>
                     <a class="navbar-item">Testing</a>
@@ -41,11 +41,11 @@
         <aside class="column is-one-third">
 
         </aside>
-        
+
         <!-- This will contain the searchbar and results. -->
         <main class="column is-two-thirds">
             <!-- Add search bar here. -->
-            
+
             <!-- This contains the search result cards. -->
             <div class="columns is-multiline p-5">
                 <div class="column is-half">
@@ -55,6 +55,9 @@
                         </div>
                         <div class="card-content">
                             <div class="content">Test Recipe</div>
+                            <button class="js-modal-trigger" data-target="modal-js-example">
+                                View
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -65,6 +68,9 @@
                         </div>
                         <div class="card-content">
                             <div class="content">Test Recipe</div>
+                            <button class="js-modal-trigger" data-target="modal-js-example">
+                                View
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -75,6 +81,9 @@
                         </div>
                         <div class="card-content">
                             <div class="content">Test Recipe</div>
+                            <button class="js-modal-trigger" data-target="modal-js-example">
+                                View
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -85,6 +94,9 @@
                         </div>
                         <div class="card-content">
                             <div class="content">Test Recipe</div>
+                            <button class="js-modal-trigger" data-target="modal-js-example">
+                                View
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -92,6 +104,37 @@
 
         </main>
     </div>
+    
+    <!-- Needed for Modal to function - Cole -->
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+            <div class="box">
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut quo iste, nihil asperiores quod
+                            similique tenetur reiciendis maxime nam at repudiandae magnam eius perspiciatis dolorem
+                            soluta possimus placeat corrupti. At.</p>
+                    </div>
+
+                    <div class="column">
+                        <h1>Title of recipe</h1>
+                        <img src="assets/img/pizza.jpeg" alt="product">
+                        <div class="buttons are-medium">
+                            <button class="button">Recipe Instructions</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content - Needs to be dynamic to the recipe-->
+            </div>
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../js/search.js"></script>
