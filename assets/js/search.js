@@ -1,4 +1,5 @@
 var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+var previousViewedRecipes = [];
 
 // Autocomplete on searchbar.
 $(function () {
@@ -80,3 +81,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 //testSpoon();
+
+// ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
+function renderPreviousViewed(recipe) {
+  if (previousViewedRecipes.length === 0){
+    var savedIndex = 0;
+  } else {
+    var savedIndex = previousViewedRecipes.length;
+  }
+  previousViewedRecipes.push(recipe);
+  var previousViewed = $("#previous-views");
+
+  var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth").attr("data-index", savedIndex);
+  var iconSpan = $("<span>").addClass("icon");
+  var iconNode = $("<i>").addClass("fas fa-utensils");
+  var titleSpan = $("<span>").text(/* Added recipe title Here */);
+
+  iconSpan.append(iconNode);
+  buttonNode.append(iconSpan);
+  buttonNode.append(titleSpan);
+  previousViewed.append(buttonNode);
+
+  return;
+}
