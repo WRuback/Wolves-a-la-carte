@@ -3,6 +3,14 @@ var favoritedItems = [];
 function pullFavorites() {
     var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
     pulledFavorites !== null? favoritedItems = pulledFavorites : null;
+
+    //render favorites dropdown items
+    return;
+}
+
+function saveFavorites() {
+    localStorage.setItem("favorites", JSON.stringify(favoritedItems));
+    return;
 }
 
 function krogerOAuth(productsArray) {
