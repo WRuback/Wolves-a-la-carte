@@ -45,6 +45,7 @@ function searchRecipes(searchText) {
         })
         .then(function (data) {
             console.log(data);
+            renderRecipes(data.results);
             // Call card render function.
         });
 }
@@ -60,7 +61,7 @@ function findRecipeInfo(recipeID) {
         })
         .then(function (data) {
             console.log(data);
-            // Call card or modal function.
+            renderRecipes(data.results);
         });
 }
 
@@ -85,6 +86,41 @@ $(function () {
             $("#search-bar").val("");
         })
     });
+
+// --------------- Recipe Render ---------------------
+function renderRecipes(searchResults){
+    let display = $("#search-result-display");
+    display.empty();
+    for(let i=0; i<searchResults.length; i++){
+        let recipe = searchResults[i];
+        console.log(recipe);
+        let card = $(`<div class="column is-half">
+        <div class="card">
+            <div class="card-image">
+                <img src="${recipe.image}" alt="example-card">
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <p>${recipe.title}</p>
+                </div>
+                <button class="js-modal-trigger" data-target="modal-js-example" data-recipe-id=${recipe.id}>
+                    View
+                </button>
+            </div>
+        </div>
+    </div>`);
+        display.append(card); 
+    }
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+        const modal = $trigger.getAttribute("data-target");
+        const $target = document.getElementById(modal);
+        console.log($target);
+
+        $trigger.addEventListener('click', () => {
+            $target.classList.add('is-active');
+        });
+    });
+}
 
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
