@@ -1,3 +1,48 @@
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+// Autocomplete on searchbar.
+$(function () {
+    $("#search-bar").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
+                dataType: "json",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            value: item.title
+                        };
+                    }));
+                }
+            });
+        }
+    });
+});
+
+// Going to the search page from the search button.
+$(function () {
+    $("#search-bar-submit").on("click", function(event){
+        event.preventDefault();
+        let searchParameter = $("#search-bar").val();
+        if(searchParameter !== ""){
+          window.location.href = `./assets/html/search.html?search=${searchParameter}`;
+        }
+    })
+});
+
+var favoritedItems = [];
+
+function pullFavorites() {
+    var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
+    pulledFavorites !== null? favoritedItems = pulledFavorites : null;
+
+    //render favorites dropdown items
+    return;
+}
+
+function saveFavorites() {
+    localStorage.setItem("favorites", JSON.stringify(favoritedItems));
+    return;
+}
 
 var render = function (template, node) {
 	

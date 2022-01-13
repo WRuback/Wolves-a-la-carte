@@ -1,5 +1,4 @@
-#macspecific .
-.DS_Store
+#macspecific 
 # Logs
 logs
 *.log
