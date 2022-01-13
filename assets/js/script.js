@@ -44,6 +44,11 @@ function saveFavorites() {
     return;
 }
 
+var render = function (template, node) {
+	
+};
+
+
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
