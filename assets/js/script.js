@@ -24,7 +24,7 @@ $(function () {
     event.preventDefault();
     let searchParameter = $("#search-bar").val();
     if (searchParameter !== "") {
-      window.location.href = `./assets/html/search.html?search=${searchParameter}`;
+      window.location.href = `./search.html?search=${searchParameter}`;
     }
   })
 });
@@ -74,7 +74,7 @@ $(function(){
   $("#favorites-dropdown").on("click", ".navbar-item", function(event){
     event.preventDefault();
     //console.log(event.target.getAttribute("recipe-id"));
-    window.location.href = `./assets/html/search.html?find=${event.target.getAttribute("recipe-id")}`;
+    window.location.href = `./search.html?find=${event.target.getAttribute("recipe-id")}`;
   });
 })
 
