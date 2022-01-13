@@ -70,6 +70,7 @@ function renderFavorites() {
 
 $(function(){
   pullFavorites();
+  renderFavorites();
   $("#favorites-dropdown").on("click", ".navbar-item", function(event){
     event.preventDefault();
     //console.log(event.target.getAttribute("recipe-id"));

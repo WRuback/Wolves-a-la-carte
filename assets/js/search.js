@@ -65,6 +65,54 @@ function findRecipeInfo(recipeID) {
         });
 }
 
+// --------------- favorite Recipe functionality ------------------------
+var favoritedItems = [];
+
+function pullFavorites() {
+  var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
+  pulledFavorites !== null ? favoritedItems = pulledFavorites : null;
+  return;
+}
+
+function saveFavorites() {
+  localStorage.setItem("favorites", JSON.stringify(favoritedItems));
+  return;
+}
+
+function addFavorite(recipeName, recipeID) {
+  favoritedItems.push({
+    name: recipeName,
+    id: recipeID
+  });
+  saveFavorites();
+  renderFavorites();
+}
+
+function renderFavorites() {
+  let favoriteList = $("#favorites-dropdown");
+  favoriteList.empty()
+  for (let i = 0; i < favoritedItems.length; i++) {
+    let item = favoritedItems[i];
+    let card = `<a class="navbar-item" recipe-id=${item.id}>
+      <span class="icon">
+          <i class="fas fa-utensils"></i>
+      </span>
+      <span>${item.name}</span>
+      </a>`;
+    favoriteList.append(card);
+
+  }
+};
+
+$(function(){
+  pullFavorites();
+  renderFavorites();
+  $("#favorites-dropdown").on("click", ".navbar-item", function(event){
+    event.preventDefault();
+    //console.log(event.target.getAttribute("recipe-id"));
+    findRecipeInfo(event.target.getAttribute("recipe-id"));
+  });
+})
 // --------------- Recipe call on submit click - Billy ------------------
 $(function () {
     // Load recipe search.
