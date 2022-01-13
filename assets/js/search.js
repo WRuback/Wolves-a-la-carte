@@ -1,5 +1,6 @@
 var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
 var previousViewedRecipes = [];
+var totalPrice = 0;
 
 // Autocomplete on searchbar.
 $(function () {
@@ -107,6 +108,7 @@ function krogerProductSearch(product, token) {
     console.log(response);
     var productPrice = response.data[0].items[0].price.regular;
     console.log(productPrice);
+    totalPrice += productPrice;
   });
   
   return;
