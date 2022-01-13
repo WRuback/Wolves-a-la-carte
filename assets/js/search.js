@@ -86,7 +86,6 @@ $(function () {
             $("#search-bar").val("");
         })
     });
-
 // --------------- Recipe Render ---------------------
 function renderRecipes(searchResults){
     let display = $("#search-result-display");
