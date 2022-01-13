@@ -146,8 +146,8 @@ function renderPreviousViewed(recipe) {
 
     var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth").attr("data-index", savedIndex);
     var iconSpan = $("<span>").addClass("icon");
-    var iconNode = $("<i>").addClass("fas fa-utensils");
-    var titleSpan = $("<span>").text(/* Added recipe title Here */);
+    var iconNode = $("<i>").addClass("fas fa-utensils").attr("data-index", savedIndex);
+    var titleSpan = $("<span>").attr("data-index", savedIndex).text(/* Added recipe title Here */);
 
     iconSpan.append(iconNode);
     buttonNode.append(iconSpan);
@@ -156,3 +156,15 @@ function renderPreviousViewed(recipe) {
 
     return;
 }
+
+// ---------------------- View History Event Listener | Ezequiel --------------------------
+$("#previous-views").on("click", function(event){
+  var node = event.target.nodeName;
+  if (node === "BUTTON" || node === "SPAN" || node === "I"){
+    var recipePreviousIndex = event.target.dataset.index; 
+    //call function to render modal data using the previous viewed recipe data array
+    $("#modal-js-example").addClass("is-active");
+  }
+
+  return;
+})
