@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+
 var render = function (template, node) {
 	
 };
-=======
+
 
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -96,4 +96,3 @@ function krogerProductSearch(product, token) {
     return;
 }
 
->>>>>>> e2fb02e2f004e5b8d49343c2a9ae2c18a79835d0
