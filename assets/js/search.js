@@ -159,6 +159,7 @@ function krogerOAuth(productsArray) {
         for (var i = 0; i < productsArray.length; i++) {
             krogerProductSearch(productsArray[i], response.access_token);
         }
+        $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
     });
     return;
 }
@@ -178,10 +179,19 @@ function krogerProductSearch(product, token) {
     $.ajax(settings).done(function (response) {
         console.log(response);
         var productPrice = response.data[0].items[0].price.regular;
-        console.log(productPrice);
+        var productName = response.data[0].description;
+        renderKrogerIngredientCost(productPrice, productName)
         totalPrice += productPrice;
     });
 
+    return;
+}
+
+// --------------- Render Ingredient Cost List | Ezequiel --------------------
+function renderKrogerIngredientCost(price, product) {
+    var listNode = $("<li>").text(`${product} - ${price}`);
+    $("#ingredientCostList").append(listNode);
+    
     return;
 }
 
