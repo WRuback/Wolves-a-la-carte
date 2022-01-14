@@ -68,13 +68,20 @@ function renderFavorites() {
   }
 };
 
-$(function(){
+$(function () {
   pullFavorites();
   renderFavorites();
-  $("#favorites-dropdown").on("click", ".navbar-item", function(event){
+  $("#favorites-dropdown").on("click", ".navbar-item", function (event) {
     event.preventDefault();
-    //console.log(event.target.getAttribute("recipe-id"));
-    window.location.href = `./search.html?find=${event.target.getAttribute("recipe-id")}`;
+    let target = "";
+    if (event.target.nodeName === "SPAN") {
+      target = event.target.parentElement;
+    } else if (event.target.nodeName === "I") {
+      target = event.target.parentElement.parentElement;
+    } else {
+      target = event.target;
+    }
+    window.location.href = `./search.html?find=${target.getAttribute("recipe-id")}`;
   });
 })
 
@@ -128,19 +135,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --------- Static boxes ----------
 
-const wolvesRecommended1 = {title: "Pizza", cost: "$24.99", staticImage: "./assets/img/pizza.jpeg"};
+const wolvesRecommended1 = { title: "Pizza", cost: "$24.99", staticImage: "./assets/img/pizza.jpeg" };
 
 $("#title1").text(wolvesRecommended1.title);
 $("#totalCost").text(wolvesRecommended1.cost);
 $("#staticImage").attr("src", wolvesRecommended1.staticImage)
 
-const wolvesRecommended2 = {title: "Burger", cost: "$10.99", staticImage: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280,c_limit/the-ultimate-hamburger.jpg"};
+const wolvesRecommended2 = { title: "Burger", cost: "$10.99", staticImage: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280,c_limit/the-ultimate-hamburger.jpg" };
 
 $("#title2").text(wolvesRecommended2.title);
 $("#totalCost2").text(wolvesRecommended2.cost);
 $("#staticImage2").attr("src", wolvesRecommended2.staticImage)
 
-const wolvesRecommended3 = {title: "Cheese Board", cost: "$30.99", staticImage: "https://cdn.pixabay.com/photo/2016/09/15/19/24/salad-1672505_960_720.jpg"};
+const wolvesRecommended3 = { title: "Cheese Board", cost: "$30.99", staticImage: "https://cdn.pixabay.com/photo/2016/09/15/19/24/salad-1672505_960_720.jpg" };
 
 $("#title3").text(wolvesRecommended3.title);
 $("#totalCost3").text(wolvesRecommended3.cost);
