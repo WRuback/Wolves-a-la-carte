@@ -83,6 +83,8 @@ function renderModal(searchResults) {
     }
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
+    //calls render to previous divs button
+    renderPreviousViewed(searchResults);
     return;
 }
 function displayModalLoading() {
@@ -331,20 +333,25 @@ function renderPreviousViewed(recipe) {
         previousViewedRecipes.shift();
     }
 
-    previousViewedRecipes.push(recipe);
     var previousViewed = $("#previous-views");
-
-
     var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
     var iconSpan = $("<span>").addClass("icon");
     var iconNode = $("<i>").addClass("fas fa-utensils");
-    var titleSpan = $("<span>").text(/* Added recipe title Here */);
+    var titleSpan = $("<span>").text(recipe.title);
 
     iconSpan.append(iconNode);
     buttonNode.append(iconSpan);
     buttonNode.append(titleSpan);
+    
+    //checks if we already have the button
+    for (var i=0; i<numButtons.length; i++){
+        if(recipe.title === numButtons[i].innerText){
+            return;
+        }
+    }
+    
     previousViewed.append(buttonNode);
-
+    previousViewedRecipes.push(recipe);
     return;
 }
 
