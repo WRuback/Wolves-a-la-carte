@@ -1,0 +1,9 @@
+.hero {
+    background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url("https://external-preview.redd.it/1MCZDtWvygw2B7dMq4_912-zborUyOdUVxZw3CXA86M.jpg?auto=webp&s=11ebf7e5fc2afad87ad1eab338567353b740788e");
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+    background-color: black;
+    
+}
