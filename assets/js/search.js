@@ -1,4 +1,4 @@
-var spoonKey = "5a7f763992284d77b77935d7425e7be4"
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
 var previousViewedRecipes = [];
 var totalPrice = 0;
 
@@ -75,15 +75,25 @@ function renderModal(searchResults) {
     $("#recipe-Url").attr("href", searchResults.sourceUrl);
     $("#recipe-title").text(searchResults.title);
     $("#recipe-image").attr("src", searchResults.image);
+    $("#favorite-button").attr("data-recipe-id", searchResults.id);
+    $("#favorite-button").attr("data-title", searchResults.title);
+    $("#favorite-button").removeClass("has-text-danger");
+    for (let i = 0; i < favoritedItems.length; i++) {
+        if (favoritedItems[i].id == searchResults.id) {
+            $("#favorite-button").addClass("has-text-danger");
+        };
+    }
     var ingredients = [];
     $("#ingredientList").empty();
     for (let i = 0; i < searchResults.extendedIngredients.length; i++) {
         $("#ingredientList").append($("<li>").text(searchResults.extendedIngredients[i].original));
         ingredients.push(searchResults.extendedIngredients[i].name);
     }
-    krogerOAuth(ingredients);
+    getIngredients(ingredients);
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
+    //calls render to previous divs button
+    renderPreviousViewed(searchResults);
     return;
 }
 function displayModalLoading() {
@@ -92,7 +102,7 @@ function displayModalLoading() {
     return;
 }
 // --------------- Load Modal -------------------
-async function loadRecipeModal(buttonTarget){
+async function loadRecipeModal(buttonTarget) {
     displayModalLoading();
     let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
     renderModal(recipeInfo);
@@ -120,6 +130,19 @@ function addFavorite(recipeName, recipeID) {
     renderFavorites();
 }
 
+function removeFavorite(recipeID) {
+    let newFav = favoritedItems;
+    for (let i = 0; i < newFav.length; i++) {
+        if (newFav[i].id == recipeID) {
+            newFav.splice(i, 1);
+            break;
+        }
+    }
+    favoritedItems = newFav;
+    saveFavorites();
+    renderFavorites();
+}
+
 function renderFavorites() {
     let favoriteList = $("#favorites-dropdown");
     favoriteList.empty()
@@ -139,15 +162,58 @@ function renderFavorites() {
 $(function () {
     pullFavorites();
     renderFavorites();
-    $("#favorites-dropdown").on("click", ".navbar-item", function (event) {
+    $("#favorites-dropdown").on("click", ".navbar-item", async function (event) {
         event.preventDefault();
         //console.log(event.target.getAttribute("recipe-id"));
-        findRecipeInfo(event.target.getAttribute("recipe-id"));
+        let target = "";
+        if(event.target.nodeName === "SPAN"){
+            target = event.target.parentElement;
+        } else if(event.target.nodeName === "I"){
+            target = event.target.parentElement.parentElement;
+        }else{
+            target = event.target;
+        }
+        let recipeInfo = await findRecipeInfo(target.getAttribute("recipe-id"));
+        const $target = document.getElementById("modal-js-example");
+        $target.classList.add('is-active');
+        renderModal(recipeInfo);
+
+    });
+    $("#favorite-button").on("click", function (event) {
+        let target = "";
+        if(event.target.nodeName === "I"){
+            target = event.target.parentElement;
+        }else{
+            target = event.target;
+        }
+        let button = $(target);
+        if (button.hasClass("has-text-danger")) {
+            button.removeClass("has-text-danger");
+            removeFavorite(button.attr("data-recipe-id"));
+        }
+        else {
+            button.addClass("has-text-danger");
+            addFavorite(button.attr("data-title"), button.attr("data-recipe-id"));
+        }
     });
 })
 
 // --------------- Kroger API Calls | Ezequiel -----------------------
-function krogerOAuth(productsArray) {
+async function getIngredients(productsArray) {
+    $("#ingredientCostList").empty();
+    totalPrice = 0;
+    productsArray.forEach(element => {
+        $("#ingredientCostList").append("<li>...</li>");
+    });
+    let key = await krogerOAuth();
+    console.log(key);
+    for (var i = 0; i < productsArray.length; i++) {
+        krogerProductSearch(productsArray[i], key.access_token, i);
+    }
+    $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+}
+
+async function krogerOAuth() {
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -163,47 +229,52 @@ function krogerOAuth(productsArray) {
         }
     }
 
-    $.ajax(settings).done(function (response) {
+    let output = await $.ajax(settings).done(function (response) {
         console.log("OAuth \n -----------");
         console.log(response);
-        for (var i = 0; i < productsArray.length; i++) {
-            krogerProductSearch(productsArray[i], response.access_token);
-        }
-        $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+        return response.access_token;
     });
-    return;
+    return output;
 }
 
-function krogerProductSearch(product, token) {
+function krogerProductSearch(product, token, index) {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": `https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product}&filter.locationId=01400943`,
+        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product}&filter.locationId=01400943`,
         "method": "GET",
         "headers": {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`
         }
     }
-    $("#ingredientCostList").empty();
-    totalPrice = 0;
     $.ajax(settings).done(function (response) {
         console.log(response);
-        var productPrice = response.data[0].items[0].price.regular;
-        var productName = response.data[0].description;
-        renderKrogerIngredientCost(productPrice, productName)
+        let productPrice = 0;
+        let productName = "Could not be found";
+        if (response.data.length !== 0) {
+            productPrice = response.data[0].items[0].price.regular;
+            productName = response.data[0].description;
+        }
+        renderKrogerIngredientCost(productPrice, productName, index)
         totalPrice += productPrice;
         $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
+    }).fail(function(){
+        let productPrice = 0;
+        let productName = "Could not be found quick enough";
+        renderKrogerIngredientCost(productPrice, productName, index)
     });
 
     return;
 }
 
 // --------------- Render Ingredient Cost List | Ezequiel --------------------
-function renderKrogerIngredientCost(price, product) {
-    var listNode = $("<li>").text(`${product} - ${price}`);
-    $("#ingredientCostList").append(listNode);
-    
+
+function renderKrogerIngredientCost(price, product, index) {
+    var listNode = `${product} - ${price}`;
+    $("#ingredientCostList").children().eq(index).text(listNode);
+
+
     return;
 }
 
@@ -328,35 +399,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
 function renderPreviousViewed(recipe) {
-    if (previousViewedRecipes.length === 0) {
-        var savedIndex = 0;
-    } else {
-        var savedIndex = previousViewedRecipes.length;
+    var numButtons = document.querySelectorAll(".previousRecipe");
+    if (numButtons.length === 6){
+        numButtons[0].remove();
+        previousViewedRecipes.shift();
     }
-    previousViewedRecipes.push(recipe);
+
     var previousViewed = $("#previous-views");
-
-
-    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth").attr("data-index", savedIndex);
+    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
     var iconSpan = $("<span>").addClass("icon");
-    var iconNode = $("<i>").addClass("fas fa-utensils").attr("data-index", savedIndex);
-    var titleSpan = $("<span>").attr("data-index", savedIndex).text(/* Added recipe title Here */);
+    var iconNode = $("<i>").addClass("fas fa-utensils");
+    var titleSpan = $("<span>").text(recipe.title);
 
     iconSpan.append(iconNode);
     buttonNode.append(iconSpan);
     buttonNode.append(titleSpan);
+    
+    //checks if we already have the button
+    for (var i=0; i<numButtons.length; i++){
+        if(recipe.title === numButtons[i].innerText){
+            return;
+        }
+    }
+    
     previousViewed.append(buttonNode);
-
+    previousViewedRecipes.push(recipe);
     return;
 }
 
 // ---------------------- View History Event Listener | Ezequiel --------------------------
 $("#previous-views").on("click", function (event) {
     var node = event.target.nodeName;
+    var buttonList = document.querySelectorAll(".previousRecipe");
+    if (node === "BUTTON"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    } else if (node === "SPAN"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target.parentElement === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    } else if (node === "I"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target.parentElement.parentElement === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    }
+    console.log(recipePreviousIndex);
     if (node === "BUTTON" || node === "SPAN" || node === "I") {
-        var recipePreviousIndex = event.target.dataset.index;
-        //call function to render modal data using the previous viewed recipe data array
+        renderModal(previousViewedRecipes[recipePreviousIndex]);
         $("#modal-js-example").addClass("is-active");
+        
     }
 
     return;
