@@ -325,19 +325,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
 function renderPreviousViewed(recipe) {
-    if (previousViewedRecipes.length === 0) {
-        var savedIndex = 0;
-    } else {
-        var savedIndex = previousViewedRecipes.length;
+    var numButtons = document.querySelectorAll(".previousRecipe");
+    if (numButtons.length === 6){
+        numButtons[0].remove();
+        previousViewedRecipes.shift();
     }
+
     previousViewedRecipes.push(recipe);
     var previousViewed = $("#previous-views");
 
 
-    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth").attr("data-index", savedIndex);
+    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
     var iconSpan = $("<span>").addClass("icon");
-    var iconNode = $("<i>").addClass("fas fa-utensils").attr("data-index", savedIndex);
-    var titleSpan = $("<span>").attr("data-index", savedIndex).text(/* Added recipe title Here */);
+    var iconNode = $("<i>").addClass("fas fa-utensils");
+    var titleSpan = $("<span>").text(/* Added recipe title Here */);
 
     iconSpan.append(iconNode);
     buttonNode.append(iconSpan);
@@ -350,10 +351,34 @@ function renderPreviousViewed(recipe) {
 // ---------------------- View History Event Listener | Ezequiel --------------------------
 $("#previous-views").on("click", function (event) {
     var node = event.target.nodeName;
+    var buttonList = document.querySelectorAll(".previousRecipe");
+    if (node === "BUTTON"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    } else if (node === "SPAN"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target.parentElement === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    } else if (node === "I"){
+        for (var i=0; i<buttonList.length; i++){
+            if (event.target.parentElement.parentElement === buttonList[i]){
+                var recipePreviousIndex = i;
+                break;
+            }
+        }
+    }
+    console.log(recipePreviousIndex);
     if (node === "BUTTON" || node === "SPAN" || node === "I") {
-        var recipePreviousIndex = event.target.dataset.index;
-        //call function to render modal data using the previous viewed recipe data array
+        renderModal(previousViewedRecipes[recipePreviousIndex]);
         $("#modal-js-example").addClass("is-active");
+        
     }
 
     return;
