@@ -166,11 +166,11 @@ $(function () {
         event.preventDefault();
         //console.log(event.target.getAttribute("recipe-id"));
         let target = "";
-        if(event.target.nodeName === "SPAN"){
+        if (event.target.nodeName === "SPAN") {
             target = event.target.parentElement;
-        } else if(event.target.nodeName === "I"){
+        } else if (event.target.nodeName === "I") {
             target = event.target.parentElement.parentElement;
-        }else{
+        } else {
             target = event.target;
         }
         let recipeInfo = await findRecipeInfo(target.getAttribute("recipe-id"));
@@ -181,9 +181,9 @@ $(function () {
     });
     $("#favorite-button").on("click", function (event) {
         let target = "";
-        if(event.target.nodeName === "I"){
+        if (event.target.nodeName === "I") {
             target = event.target.parentElement;
-        }else{
+        } else {
             target = event.target;
         }
         let button = $(target);
@@ -259,7 +259,7 @@ function krogerProductSearch(product, token, index) {
         renderKrogerIngredientCost(productPrice, productName, index)
         totalPrice += productPrice;
         $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
-    }).fail(function(){
+    }).fail(function () {
         let productPrice = 0;
         let productName = "Could not be found quick enough";
         renderKrogerIngredientCost(productPrice, productName, index)
@@ -293,7 +293,7 @@ $(function () {
     }
 })
 // --------------- Recipe call on submit click - Billy ------------------
-$(function () {
+$(async function () {
     // Load recipe search.
     let loadSearch = document.location.search;
     if (loadSearch) {
@@ -302,7 +302,10 @@ $(function () {
             searchRecipes(recipeSearch[1]);
         }
         else if (recipeSearch[0] === "?find") {
-            findRecipeInfo(recipeSearch[1]);
+            let recipeInfo = await findRecipeInfo(recipeSearch[1]);
+            const $target = document.getElementById("modal-js-example");
+            $target.classList.add('is-active');
+            renderModal(recipeInfo);
         }
     }
 
@@ -400,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
 function renderPreviousViewed(recipe) {
     var numButtons = document.querySelectorAll(".previousRecipe");
-    if (numButtons.length === 6){
+    if (numButtons.length === 6) {
         numButtons[0].remove();
         previousViewedRecipes.shift();
     }
@@ -414,14 +417,14 @@ function renderPreviousViewed(recipe) {
     iconSpan.append(iconNode);
     buttonNode.append(iconSpan);
     buttonNode.append(titleSpan);
-    
+
     //checks if we already have the button
-    for (var i=0; i<numButtons.length; i++){
-        if(recipe.title === numButtons[i].innerText){
+    for (var i = 0; i < numButtons.length; i++) {
+        if (recipe.title === numButtons[i].innerText) {
             return;
         }
     }
-    
+
     previousViewed.append(buttonNode);
     previousViewedRecipes.push(recipe);
     return;
@@ -431,23 +434,23 @@ function renderPreviousViewed(recipe) {
 $("#previous-views").on("click", function (event) {
     var node = event.target.nodeName;
     var buttonList = document.querySelectorAll(".previousRecipe");
-    if (node === "BUTTON"){
-        for (var i=0; i<buttonList.length; i++){
-            if (event.target === buttonList[i]){
+    if (node === "BUTTON") {
+        for (var i = 0; i < buttonList.length; i++) {
+            if (event.target === buttonList[i]) {
                 var recipePreviousIndex = i;
                 break;
             }
         }
-    } else if (node === "SPAN"){
-        for (var i=0; i<buttonList.length; i++){
-            if (event.target.parentElement === buttonList[i]){
+    } else if (node === "SPAN") {
+        for (var i = 0; i < buttonList.length; i++) {
+            if (event.target.parentElement === buttonList[i]) {
                 var recipePreviousIndex = i;
                 break;
             }
         }
-    } else if (node === "I"){
-        for (var i=0; i<buttonList.length; i++){
-            if (event.target.parentElement.parentElement === buttonList[i]){
+    } else if (node === "I") {
+        for (var i = 0; i < buttonList.length; i++) {
+            if (event.target.parentElement.parentElement === buttonList[i]) {
                 var recipePreviousIndex = i;
                 break;
             }
@@ -457,7 +460,7 @@ $("#previous-views").on("click", function (event) {
     if (node === "BUTTON" || node === "SPAN" || node === "I") {
         renderModal(previousViewedRecipes[recipePreviousIndex]);
         $("#modal-js-example").addClass("is-active");
-        
+
     }
 
     return;
