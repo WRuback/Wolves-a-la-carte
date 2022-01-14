@@ -76,11 +76,12 @@ function renderModal(searchResults) {
     $("#recipe-title").text(searchResults.title);
     $("#recipe-image").attr("src", searchResults.image);
     var ingredients = [];
-
+    $("#ingredientList").empty();
     for (let i = 0; i < searchResults.extendedIngredients.length; i++) {
         $("#ingredientList").append($("<li>").text(searchResults.extendedIngredients[i].original));
         ingredients.push(searchResults.extendedIngredients[i].name);
     }
+    krogerOAuth(ingredients);
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
     return;
@@ -184,13 +185,15 @@ function krogerProductSearch(product, token) {
             "Authorization": `Bearer ${token}`
         }
     }
-
+    $("#ingredientCostList").empty();
+    totalPrice = 0;
     $.ajax(settings).done(function (response) {
         console.log(response);
         var productPrice = response.data[0].items[0].price.regular;
         var productName = response.data[0].description;
         renderKrogerIngredientCost(productPrice, productName)
         totalPrice += productPrice;
+        $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
     });
 
     return;
