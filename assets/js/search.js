@@ -151,7 +151,7 @@ async function getIngredients(productsArray) {
     $("#ingredientCostList").empty();
     totalPrice = 0;
     productsArray.forEach(element => {
-        $("#ingredientCostList").append("<li></li>");
+        $("#ingredientCostList").append("<li>...</li>");
     });
     let key = await krogerOAuth();
     console.log(key);
@@ -189,7 +189,7 @@ function krogerProductSearch(product, token, index) {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": `https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product}&filter.locationId=01400943`,
+        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product}&filter.locationId=01400943`,
         "method": "GET",
         "headers": {
             "Accept": "application/json",
