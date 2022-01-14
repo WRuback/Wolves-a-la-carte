@@ -75,6 +75,14 @@ function renderModal(searchResults) {
     $("#recipe-Url").attr("href", searchResults.sourceUrl);
     $("#recipe-title").text(searchResults.title);
     $("#recipe-image").attr("src", searchResults.image);
+    $("#favorite-button").attr("data-recipe-id", searchResults.id);
+    $("#favorite-button").attr("data-title", searchResults.title);
+    $("#favorite-button").removeClass("has-text-danger");
+    for (let i = 0; i < favoritedItems.length; i++) {
+        if (favoritedItems[i].id == searchResults.id) {
+            $("#favorite-button").addClass("has-text-danger");
+        };
+    }
     var ingredients = [];
     $("#ingredientList").empty();
     for (let i = 0; i < searchResults.extendedIngredients.length; i++) {
@@ -120,6 +128,19 @@ function addFavorite(recipeName, recipeID) {
     renderFavorites();
 }
 
+function removeFavorite(recipeID) {
+    let newFav = favoritedItems;
+    for (let i = 0; i < newFav.length; i++) {
+        if (newFav[i].id == recipeID) {
+            newFav.splice(i, 1);
+            break;
+        }
+    }
+    favoritedItems = newFav;
+    saveFavorites();
+    renderFavorites();
+}
+
 function renderFavorites() {
     let favoriteList = $("#favorites-dropdown");
     favoriteList.empty()
@@ -139,10 +160,39 @@ function renderFavorites() {
 $(function () {
     pullFavorites();
     renderFavorites();
-    $("#favorites-dropdown").on("click", ".navbar-item", function (event) {
+    $("#favorites-dropdown").on("click", ".navbar-item", async function (event) {
         event.preventDefault();
         //console.log(event.target.getAttribute("recipe-id"));
-        findRecipeInfo(event.target.getAttribute("recipe-id"));
+        let target = "";
+        if(event.target.nodeName === "SPAN"){
+            target = event.target.parentElement;
+        } else if(event.target.nodeName === "I"){
+            target = event.target.parentElement.parentElement;
+        }else{
+            target = event.target;
+        }
+        let recipeInfo = await findRecipeInfo(target.getAttribute("recipe-id"));
+        const $target = document.getElementById("modal-js-example");
+        $target.classList.add('is-active');
+        renderModal(recipeInfo);
+
+    });
+    $("#favorite-button").on("click", function (event) {
+        let target = "";
+        if(event.target.nodeName === "I"){
+            target = event.target.parentElement;
+        }else{
+            target = event.target;
+        }
+        let button = $(target);
+        if (button.hasClass("has-text-danger")) {
+            button.removeClass("has-text-danger");
+            removeFavorite(button.attr("data-recipe-id"));
+        }
+        else {
+            button.addClass("has-text-danger");
+            addFavorite(button.attr("data-title"), button.attr("data-recipe-id"));
+        }
     });
 })
 
@@ -217,9 +267,11 @@ function krogerProductSearch(product, token, index) {
 }
 
 // --------------- Render Ingredient Cost List | Ezequiel --------------------
+
 function renderKrogerIngredientCost(price, product, index) {
     var listNode = `${product} - ${price}`;
     $("#ingredientCostList").children().eq(index).text(listNode);
+
 
     return;
 }
