@@ -16,10 +16,15 @@
 <body>
     <!-- Added header - Ezequiel -->
     <header>
-        <nav class="navbar is-success is-spaced" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-light is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a href="#"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
-                <h1 class="navbar-item is-size-2">a La Carte</h1>
+                <h1 class="navbar-item is-size-2">a La Carte
+                <span class="icon">
+                    <i class="fas fa-utensils"></i>
+                </span>
+                <span></span>
+            </h1>
             </div>
 
             <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
@@ -38,11 +43,17 @@
             </div>
         </nav>
     </header>
-
+    <!-- This hero-1 bulma class adds a background cover image -Dre -->
+    <section class="hero-1 is-danger is-fullheight-with-navbar ">
+        <div class="hero-head">
+        ></div>
+        <div class="hero-body">
+          </div>
+        </div>
     <div class="columns">
         <!-- This will contain the previous searches. -->
         <aside class="column is-one-third">
-            <h2 class="is-size-3 pt-5">Previously Viewed Recipes</h2>
+            <h2 class="is-size-3 pt-5 title has-text-white">Previously Viewed Recipes</h2>
             <hr>
             <div class="buttons are-medium" id="previous-views">
                 <button class="button is-info is-light is-fullwidth">
@@ -70,7 +81,7 @@
                             <input id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
                         </div>
                         <div class="control">
-                            <button id="search-bar-submit" type="submit" class="button is-primary">Find</button>
+                            <button id="search-bar-submit" type="submit" class="button is-info">Find</button>
                         </div>
                     </div>
                 </form>
@@ -94,7 +105,7 @@
 
         </main>
     </div>
-
+</section>
     <!-- Needed for Modal to function - Cole -->
     <div id="modal-js-example" class="modal">
         <div class="modal-background"></div>

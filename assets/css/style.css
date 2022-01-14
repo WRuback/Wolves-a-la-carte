@@ -1,5 +1,20 @@
+/* Background image for the search page - Dre */
+.hero-1 {
+    background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url("https://images.unsplash.com/photo-1575000977355-8b2a719926c9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-attachment: fixed;
+    background-size:  cover;
+    background-color: black;
+    
+}
+/* Add padding to the previously viewed recipes - Dre*/
+.pt-5 {
+    padding: 20px;
+}
+/* background image landing page - Dre */
 .hero {
-    background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url("https://external-preview.redd.it/1MCZDtWvygw2B7dMq4_912-zborUyOdUVxZw3CXA86M.jpg?auto=webp&s=11ebf7e5fc2afad87ad1eab338567353b740788e");
+    background-image:linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , url("https://images.unsplash.com/photo-1495461199391-8c39ab674295?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
     background-position: center center;
     background-repeat:  no-repeat;
     background-attachment: fixed;
