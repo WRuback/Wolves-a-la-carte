@@ -51,9 +51,9 @@ function searchRecipes(searchText) {
         });
 }
 
-function findRecipeInfo(recipeID) {
+async function findRecipeInfo(recipeID) {
     let url = ` https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=${spoonKey}&includeNutrition=false`;
-    fetch(url)
+    let output = await fetch(url)
         .then(function (response) {
             if (response.status === 401) {
                 console.log("You failed!");
@@ -63,16 +63,15 @@ function findRecipeInfo(recipeID) {
         .then(function (data) {
             console.log(data);
             //   renderRecipes(data.results);
-            renderModal(data);
+            return data;
         });
+    return output;
 }
 
 
 
 // ------------------- Modal Render -----------
 function renderModal(searchResults) {
-    let display = $("#modal-js-example");
-    display.empty();
     $("#recipe-Url").attr("href", searchResults.sourceUrl);
     $("#recipe-title").text(searchResults.title);
     $("#recipe-image").attr("src", searchResults.image);
@@ -82,11 +81,21 @@ function renderModal(searchResults) {
         $("#ingredientList").append($("<li>").text(searchResults.extendedIngredients[i].original));
         ingredients.push(searchResults.extendedIngredients[i].name);
     }
-
-    // krogerOAuth(ingredients);
+    $("#recipe-display").removeClass("is-hidden");
+    $("#loading-display").addClass("is-hidden");
     return;
 }
-
+function displayModalLoading() {
+    $("#recipe-display").addClass("is-hidden");
+    $("#loading-display").removeClass("is-hidden");
+    return;
+}
+// --------------- Load Modal -------------------
+async function loadRecipeModal(buttonTarget){
+    displayModalLoading();
+    let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
+    renderModal(recipeInfo);
+}
 // --------------- favorite Recipe functionality ------------------------
 var favoritedItems = [];
 
@@ -248,7 +257,7 @@ function renderRecipes(searchResults) {
                 <div class="content">
                     <p>${recipe.title}</p>
                 </div>
-                <button class="js-modal-trigger" data-target="modal-js-example" data-recipe-id=${recipe.id}></button>
+                <button class="js-modal-trigger button mx-auto" data-target="modal-js-example" data-recipe-id=${recipe.id}>view</button>
             </div>
         </div>
     </div>`);
@@ -259,8 +268,9 @@ function renderRecipes(searchResults) {
         const $target = document.getElementById(modal);
         console.log($target);
 
-        $trigger.addEventListener('click', () => {
+        $trigger.addEventListener('click', (event) => {
             $target.classList.add('is-active');
+            loadRecipeModal(event.target);
         });
     });
 }
