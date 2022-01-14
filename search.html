@@ -101,14 +101,19 @@
         <div class="modal-background"></div>
 
         <div class="modal-content">
-            <div class="box">
-                <div class="columns is-mobile">
+            <div class="box" >
+                <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
+                <div class="columns is-mobile" id="recipe-display">
+
                     <div class="column">
                         <div>
                             <ul id="ingredientList"></ul>
                         </div>
+                        <hr>
                         <div>
-                            <ul id="ingredientCost"></ul>
+                            <ul id="ingredientCostList"></ul>
+                            <hr>
+                            <p id="ingredientCost"></p>
                         </div>
                     </div>
                     <div class="column">
