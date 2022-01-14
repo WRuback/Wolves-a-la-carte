@@ -1,4 +1,4 @@
-var spoonKey = "5a7f763992284d77b77935d7425e7be4"
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
 var previousViewedRecipes = [];
 var totalPrice = 0;
 
@@ -81,7 +81,7 @@ function renderModal(searchResults) {
         $("#ingredientList").append($("<li>").text(searchResults.extendedIngredients[i].original));
         ingredients.push(searchResults.extendedIngredients[i].name);
     }
-    krogerOAuth(ingredients);
+    getIngredients(ingredients);
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
     return;
@@ -92,7 +92,7 @@ function displayModalLoading() {
     return;
 }
 // --------------- Load Modal -------------------
-async function loadRecipeModal(buttonTarget){
+async function loadRecipeModal(buttonTarget) {
     displayModalLoading();
     let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
     renderModal(recipeInfo);
@@ -147,7 +147,21 @@ $(function () {
 })
 
 // --------------- Kroger API Calls | Ezequiel -----------------------
-function krogerOAuth(productsArray) {
+async function getIngredients(productsArray) {
+    $("#ingredientCostList").empty();
+    totalPrice = 0;
+    productsArray.forEach(element => {
+        $("#ingredientCostList").append("<li></li>");
+    });
+    let key = await krogerOAuth();
+    console.log(key);
+    for (var i = 0; i < productsArray.length; i++) {
+        krogerProductSearch(productsArray[i], key.access_token, i);
+    }
+    $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+}
+
+async function krogerOAuth() {
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -163,18 +177,15 @@ function krogerOAuth(productsArray) {
         }
     }
 
-    $.ajax(settings).done(function (response) {
+    let output = await $.ajax(settings).done(function (response) {
         console.log("OAuth \n -----------");
         console.log(response);
-        for (var i = 0; i < productsArray.length; i++) {
-            krogerProductSearch(productsArray[i], response.access_token);
-        }
-        $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+        return response.access_token;
     });
-    return;
+    return output;
 }
 
-function krogerProductSearch(product, token) {
+function krogerProductSearch(product, token, index) {
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -185,25 +196,31 @@ function krogerProductSearch(product, token) {
             "Authorization": `Bearer ${token}`
         }
     }
-    $("#ingredientCostList").empty();
-    totalPrice = 0;
     $.ajax(settings).done(function (response) {
         console.log(response);
-        var productPrice = response.data[0].items[0].price.regular;
-        var productName = response.data[0].description;
-        renderKrogerIngredientCost(productPrice, productName)
+        let productPrice = 0;
+        let productName = "Could not be found";
+        if (response.data.length !== 0) {
+            productPrice = response.data[0].items[0].price.regular;
+            productName = response.data[0].description;
+        }
+        renderKrogerIngredientCost(productPrice, productName, index)
         totalPrice += productPrice;
         $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
+    }).fail(function(){
+        let productPrice = 0;
+        let productName = "Could not be found quick enough";
+        renderKrogerIngredientCost(productPrice, productName, index)
     });
 
     return;
 }
 
 // --------------- Render Ingredient Cost List | Ezequiel --------------------
-function renderKrogerIngredientCost(price, product) {
-    var listNode = $("<li>").text(`${product} - ${price}`);
-    $("#ingredientCostList").append(listNode);
-    
+function renderKrogerIngredientCost(price, product, index) {
+    var listNode = `${product} - ${price}`;
+    $("#ingredientCostList").children().eq(index).text(listNode);
+
     return;
 }
 
