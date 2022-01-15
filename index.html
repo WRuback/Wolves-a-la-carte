@@ -37,7 +37,6 @@
         </nav>
     </header>
 
-
     <section class="hero is-fullheight-with-navbar ">
         <p class="subtitle">
         <h1 class="title has-text-centered title has-text-white">
@@ -108,14 +107,15 @@
                     <div class="column is-4-tablet is-3-desktop">
                         <div class="card">
                             <div class="card-image.has-text-centered px-6">
-                                <img src="assets/img/padthai.jpeg" alt="product">
+                                <img src="assets/img/cheesecake.jpg" alt="product">
                             </div>
-                            <div class="card-content is-overlay">
-                                <p class="title is-size-4 has-text-white">Pad Thai</p>
+                            <div class="card-content">
+                                <p>$28.62</p>
+                                <p class="title is-size-5">Cheesecake</p>
                             </div>
                             <footer class="card-footer">
                                 <p class="card-footer-item">
-                                    <button class="button is-normal is-fullwidth is-link is-outlined" class="js-modal-trigger" data-target="modal-js-example">
+                                    <button class="js-modal-trigger" data-target="modal-js-cheesecake">
                                         View
                                     </button>
                                 </p>
@@ -125,26 +125,158 @@
                 </div>
             </div>
         </section>
-        <!-- Added modals - Cole -->
-        <div id="modal-js-example" class="modal">
-            <div class="modal-background"></div>
 
+        <!-- Added static modals for recommended - Cole -->
+        <div id="modal-js-pizza" class="modal">
+            <div class="modal-background"></div>
             <div class="modal-content">
                 <div class="box">
                     <div class="columns is-mobile">
                         <div class="column">
                             <div>
-                                <ul id="ingredientList"></ul>
+                                <ul id="ingredientList">
+                                    <li>4oz colby jack cheese</li>
+                                    <li>3oz cream cheese</li>
+                                    <li>2 cups of lettuce</li>
+                                    <li>1 thin pizza crust</li>
+                                    <li>1 tbsp of ranch</li>
+                                    <li>1 large tomato</li>
+                                    <li> 10 pcs of turkey bacon</li>
+                                </ul>
                             </div>
+                            <br>
                             <div>
-                                <ul id="ingredientCost"></ul>
+                                <ul id="ingredientCost">
+                                    <ul>Kroger® Colby Jack Cheese Slices - 4.49</ul>
+                                    <ul>Kroger® Deluxe Lemon Cheesecake Ice Cream - 2.99</ul>
+                                    <ul>Kroger® Garlic Powder California Seasoning Blend - 3.99</ul>
+                                    <ul>Kroger® Romaine Lettuce Hearts - 3.99</ul>
+                                    <ul>Kroger® Crispy Thin Pizza Crusts - 3.39</ul>
+                                    <ul>Kroger® Tomato Paste - 0.79</ul>
+                                </ul>
+                            </div>
+                            <br>
+                            <div>
+                                <h3>Approximate Total Cost $19.64</h3>
                             </div>
                         </div>
                         <div class="column">
-                            <h1 id="recipe-title"></h1>
-                            <img src="" alt="product" id="recipe-image">
+                            <h1>Pizza</h1>
+                            <img src="https://spoonacular.com/recipeImages/680975-556x370.jpg" alt="product"
+                                id="recipe-image">
                             <div class="buttons are-medium">
-                                <a class="button" id="recipe-Url">Recipe Instructions</a>
+                                <a class="button" href="https://www.pinkwhen.com/blt-pizza/">Recipe Instructions</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+
+        <div id="modal-js-paella" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <div class="columns is-mobile">
+                        <div class="column">
+                            <div>
+                                <ul id="ingredientList">
+                                    <li>8 chicken drumsticks or thighs</li>
+                                    <li>3 Chorizo, sliced 1/2" Thick (Portuguese or Italian)</li>
+                                    <li>Chopped parsley</li>
+                                    <li>2 garlic cloves minced</li>
+                                    <li>500g long grain rice</li>
+                                    <li>12 Clams, littleneck Or mussels or both</li>
+                                    <li>15 milliliters olive oil</li>
+                                    <li>1 medium onion</li>
+                                    <li>Freshly cracked black pepper</li>
+                                    <li>500g fillet of pork, diced into small pieces</li>
+                                    <li>200g deep red tomatoes</li>
+                                    <li>1/4 cup Unsalted butter</li>
+                                    <li>1.5L water</li>
+                                    <li>200g petit pois</li>
+                                    <li>50g jambon, smoked (pieces)</li>
+                                    <li>8 large crevettes</li>
+                                </ul>
+                            </div>
+                            <br>
+                            <div>
+                                <ul id="ingredientCost">
+                                    <li>Kroger® Garlic Twisted Bread Sticks - 1.99</li>
+                                    <li>Kroger® Long Grain Rice - 3.19</li>
+                                    <li>Kroger® Extra Virgin Olive Oil - 9.99</li>
+                                    <li>Kroger® Ground Red Cayenne Pepper - 5.99</li>
+                                    <li>Kroger® Natural Pork Spare Ribs - 2.99</li>
+                                    <li>Kroger® Diced Tomatoes in Tomato Juice - 1.25</li>
+                                    <li>Kroger® Unsalted Butter Sticks - 3.19</li>
+                                    <li>Kroger® Natural Spring Water - 3.89</li>
+                                </ul>
+                            </div>
+                            <br>
+                            <div>
+                                <h3>Approximate Total Cost $19.64</h3>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <h1>Paella</h1>
+                            <img src="https://spoonacular.com/recipeImages/654331-556x370.jpg" alt="product"
+                                id="recipe-image">
+                            <div class="buttons are-medium">
+                                <a class="button"
+                                    href="https://www.foodista.com/recipe/SVHX43GF/paella-catalane-with-mussels-squid-crevettes">Recipe
+                                    Instructions</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+
+        <div id="modal-js-cheesecake" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <div class="columns is-mobile">
+                        <div class="column">
+                            <div>
+                                <ul id="ingredientList">
+                                    <li>2 cups sliced almonds</li>
+                                    <li>1/4 cup stevia divided</li>
+                                    <li>½ teaspoon ground cinnamon</li>
+                                    <li>5 tablespoons salted butter melted</li>
+                                    <li> 32 ounces cream cheese</li>
+                                    <li>3 large eggs</li>
+                                    <li>2 teaspoons vanilla extract</li>
+                                    <li>16 ounces sour cream</li>
+                                </ul>
+                            </div>
+                            <br>
+                            <div>
+                                <ul id="ingredientCost">
+                                    <li> Kroger® Honey Roasted Almonds - 5.99</li>
+                                    <li>Kroger® Stevia Zero Calorie Sweetener Blend Packets - 2.79</li>
+                                    <li>Kroger® Ground Cinnamon - 2.99</li>
+                                    <li>Kroger® Salted Butter Sticks - 3.19</li>
+                                    <li>Kroger® Deluxe Lemon Cheesecake Ice Cream - 2.99</li>
+                                    <li>Kroger® Hard Cooked Peeled Eggs - 2.49</li>
+                                    <li>Kroger® Pure Vanilla Extract - 5.99</li>
+                                    <li>Kroger® Original Sour Cream E-Z Squeeze Bottle - 2.19</li>
+                                </ul>
+                            </div>
+                            <br>
+                            <div>
+                                <h3>Approximate Total Cost: $28.62</h3>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <h1>Keto Cheesecake</h1>
+                            <img src="https://spoonacular.com/recipeImages/1096212-556x370.jpg" alt="product"
+                                id="recipe-image">
+                            <div class="buttons are-medium">
+                                <a class="button" href="https://www.foodista.com/recipe/ZXF363M4/keto-cheesecake">Recipe
+                                    Instructions</a>
                             </div>
                         </div>
                     </div>
