@@ -19,12 +19,16 @@
         <nav class="navbar is-light is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a href="#"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
-                <h1 class="navbar-item is-size-2">a La Carte</h1>
+                <h1 class="navbar-item is-size-2">a La Carte
+                <span class="icon">
+                    <i class="fas fa-utensils"></i>
+                </span>
+                <span></span>
+            </h1>
             </div>
-
-            <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
+            <div class="navbar-item has-dropdown is-hoverable  pl-6 is-size-4 is-align-items-center">
                 <a class="nav-link">
-                    Favorite Recipes
+                    <button class="button is-link is-outlined">Favorite Recipes</button> 
                 </a>
 
                 <div class="navbar-dropdown" id="favorites-dropdown">
@@ -43,8 +47,11 @@
     <div class="box m-5">
         <form action="">
             <div class="field has-addons">
-                <div class="control is-expanded">
-                    <input id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
+                <div class="control is-expanded has-icons-left has-icons-right">
+                    <input  id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-utensils"></i>
+                      </span>
                 </div>
                 <div class="control">
                     <button id="search-bar-submit" type="submit" class="button is-link">Find</button>
@@ -59,18 +66,18 @@
    
 
     <!-- Seach bar / landing page - Dre -->
+    
     <section class="section">
         <div class="container">
-            <h1 class="title has-text-centered is-size-4 title has-text-white">Recipes</h1>
+            <h1 class="title has-text-centered is-size-4 title has-text-white">Recipes!</h1>
             <div class="columns is-centered mt-5 is-8 is-variable">
                 <div class="column is-4-tablet is-3-desktop">
                     <div class="card">
-                        <div class="card-image.has-text-centered px-6">
-                            <img src="assets/img/paella.jpeg" alt="product">
+                        <div class="is-1by1  card-image.has-text-centered px-6">
+                            <img src="assets/img/paella1.jpg" alt="product">
                         </div>
-                        <div class="card-content">
-                            <p>$28.99</p>
-                            <p class="title is-size-5">Paella</p>
+                        <div class="card-content  is-overlay">
+                            <p class="title is-size-4 has-text-white">Paella</p>
                         </div>
                         <footer class="card-footer">
                             <p class="card-footer-item">
@@ -85,11 +92,10 @@
                 <div class="column is-4-tablet is-3-desktop">
                     <div class="card">
                         <div class="card-image.has-text-centered px-6">
-                            <img src="assets/img/paella.jpeg" alt="product">
+                            <img src="assets/img/hawaiian-pizza-16-1200.jpeg" alt="product">
                         </div>
-                        <div class="card-content">
-                            <p>$10.99</p>
-                            <p class="title is-size-5">Pizza</p>
+                        <div class="card-content is-overlay">
+                            <p class="title is-size-4 has-text-white">Pizza</p>
                         </div>
                         <footer class="card-footer">
                             <p class="card-footer-item">
@@ -103,11 +109,10 @@
                 <div class="column is-4-tablet is-3-desktop">
                     <div class="card">
                         <div class="card-image.has-text-centered px-6">
-                            <img src="assets/img/paella.jpeg" alt="product">
+                            <img src="assets/img/padthai.jpeg" alt="product">
                         </div>
-                        <div class="card-content">
-                            <p>$12.99</p>
-                            <p class="title is-size-5">Pad Thai</p>
+                        <div class="card-content is-overlay">
+                            <p class="title is-size-4 has-text-white">Pad Thai</p>
                         </div>
                         <footer class="card-footer">
                             <p class="card-footer-item">
