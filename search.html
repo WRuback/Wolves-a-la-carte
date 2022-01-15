@@ -30,7 +30,7 @@
 
             <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
                 <a class="nav-link">
-                    Favorite Recipes
+                    <button class="button is-link is-outlined">Favorite Recipes</button>
                 </a>
 
                 <div class="navbar-dropdown" id="favorites-dropdown">
@@ -65,8 +65,11 @@
             <div class="box m-5">
                 <form action="">
                     <div class="field has-addons">
-                        <div class="control is-expanded">
+                        <div class="control is-expanded has-icons-left">
                             <input id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-utensils"></i>
+                              </span>
                         </div>
                         <div class="control">
                             <button id="search-bar-submit" type="submit" class="button is-info">Find</button>
