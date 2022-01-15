@@ -87,8 +87,36 @@ function renderModal(searchResults) {
     $("#ingredientList").empty();
     for (let i = 0; i < searchResults.extendedIngredients.length; i++) {
         $("#ingredientList").append($("<li>").text(searchResults.extendedIngredients[i].original));
-        ingredients.push(searchResults.extendedIngredients[i].name);
+
+        // Improve Search
+        let ingredientSection = "";
+        switch (searchResults.extendedIngredients[i].aisle) {
+            case "Baking":
+                ingredientSection = "Baking Goods";
+                break;
+            case "Milk, Eggs, Other Dairy":
+                ingredientSection = "Dairy";
+                break;
+            case "Produce":
+                ingredientSection = "Produce";
+                break;
+            default:
+                ingredientSection = "";
+        }
+        if (searchResults.extendedIngredients[i].name === "eggs" || searchResults.extendedIngredients[i].name === "cream cheese") {
+            ingredientSection = "Breakfast";
+        }
+        if (searchResults.extendedIngredients[i].name === "salt") {
+            searchResults.extendedIngredients[i].name = "Iodized Salt";
+        }
+
+
+        ingredients.push({
+            name: searchResults.extendedIngredients[i].name,
+            aisle: ingredientSection
+        });
     }
+    console.log(ingredients);
     getIngredients(ingredients);
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
@@ -208,6 +236,7 @@ async function getIngredients(productsArray) {
     let key = await krogerOAuth();
     console.log(key);
     for (var i = 0; i < productsArray.length; i++) {
+
         krogerProductSearch(productsArray[i], key.access_token, i);
     }
     $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
@@ -241,7 +270,7 @@ function krogerProductSearch(product, token, index) {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product}&filter.locationId=01400943`,
+        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product.name}&filter.locationId=01400943`,
         "method": "GET",
         "headers": {
             "Accept": "application/json",
@@ -253,15 +282,25 @@ function krogerProductSearch(product, token, index) {
         let productPrice = 0;
         let productName = "Could not be found";
         if (response.data.length !== 0) {
-            productPrice = response.data[0].items[0].price.regular;
-            productName = response.data[0].description;
+            if (product.aisle === "") {
+                productPrice = response.data[0].items[0].price.regular;
+                productName = response.data[0].description;
+            } else {
+                for (const item in response.data) {
+                    if (product.aisle == response.data[item].categories[0]) {
+                        productPrice = response.data[item].items[0].price.regular;
+                        productName = response.data[item].description;
+                        break;
+                    }
+                }
+            }
         }
         renderKrogerIngredientCost(productPrice, productName, index)
         totalPrice += productPrice;
         $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
     }).fail(function () {
         let productPrice = 0;
-        let productName = "Could not be found quick enough";
+        let productName = "Could not be found";
         renderKrogerIngredientCost(productPrice, productName, index)
     });
 
