@@ -236,7 +236,10 @@ async function getIngredients(productsArray) {
     let key = await krogerOAuth();
     console.log(key);
     for (var i = 0; i < productsArray.length; i++) {
-
+        if(i%6 === 0){
+            key = await new Promise(resolve => setTimeout(resolve, 500));
+            key = await krogerOAuth();
+        }
         krogerProductSearch(productsArray[i], key.access_token, i);
     }
     $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
