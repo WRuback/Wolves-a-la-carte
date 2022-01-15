@@ -20,5 +20,27 @@
     background-attachment: fixed;
     background-size:  cover;
     background-color: black;
-    
 }
+/* Lower the padding around the search bar - Dre */
+.box {
+    padding: 0.0rem;
+}
+/* Fill out the images inside the card */
+.px-6 {
+    padding-left: 0rem!important;
+    padding-right: 0rem!important;
+    padding-bottom: -2rem;
+}
+/* Change the padding of the card */
+.card-content {
+    background-color: transparent;
+    padding: 2.9rem;
+}
+/* Fill out all of the margins */
+.card-footer {
+    background-color: transparent;
+    border-top: 0px solid #ededed;
+    align-items: stretch;
+    display: flex;
+}
+
