@@ -1,4 +1,4 @@
-var spoonKey = "5a7f763992284d77b77935d7425e7be4"
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
 // Autocomplete on searchbar.
 $(function () {
   $("#search-bar").autocomplete({
@@ -131,25 +131,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-
-// --------- Static boxes ----------
-
-// const wolvesRecommended1 = { title: "Pizza", cost: "$24.99", staticImage: "./assets/img/pizza.jpeg" };
-
-// $("#title1").text(wolvesRecommended1.title);
-// $("#totalCost").text(wolvesRecommended1.cost);
-// $("#staticImage").attr("src", wolvesRecommended1.staticImage)
-
-// const wolvesRecommended2 = { title: "Burger", cost: "$10.99", staticImage: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280,c_limit/the-ultimate-hamburger.jpg" };
-
-// $("#title2").text(wolvesRecommended2.title);
-// $("#totalCost2").text(wolvesRecommended2.cost);
-// $("#staticImage2").attr("src", wolvesRecommended2.staticImage)
-
-// const wolvesRecommended3 = { title: "Cheese Board", cost: "$30.99", staticImage: "https://cdn.pixabay.com/photo/2016/09/15/19/24/salad-1672505_960_720.jpg" };
-
-// $("#title3").text(wolvesRecommended3.title);
-// $("#totalCost3").text(wolvesRecommended3.cost);
-// $("#staticImage3").attr("src", wolvesRecommended3.staticImage)
-
