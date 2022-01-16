@@ -1,4 +1,4 @@
-var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+var spoonKey = "5a7f763992284d77b77935d7425e7be4"
 var previousViewedRecipes = [];
 var totalPrice = 0;
 
@@ -367,18 +367,19 @@ function renderRecipes(searchResults) {
         let recipe = searchResults[i];
         console.log(recipe);
         let card = $(`<div class="column is-half">
-
-        <div class="card">
-            <div class="card-image">
-                <img src="${recipe.image}" alt="example-card">
-            </div>
-            <div class="card-content">
-                <div class="content">
-                    <p>${recipe.title}</p>
-                </div>
-                <button class="js-modal-trigger button mx-auto" data-target="modal-js-example" data-recipe-id=${recipe.id}>view</button>
-            </div>
+        <div class="card recipe-card">
+        <div class="card-image is-1by1 is-fullwidth">
+            <img class="recipe-img is-fullwidth"
+                src="${recipe.image}" alt="${recipe.title}">
         </div>
+        <div class="card-content">
+            <div class="content has-text-centered">${recipe.title}</div>
+        </div>
+        <footer class="card-footer">
+            <a href="#" class="card-footer-item js-modal-trigger"
+                data-target="modal-js-example" data-recipe-id=${recipe.id}>View</a>
+        </footer>
+    </div>
     </div>`);
         display.append(card);
     }
@@ -393,7 +394,20 @@ function renderRecipes(searchResults) {
         });
     });
 }
+{/* <div class="column is-half">
 
+<div class="card">
+    <div class="card-image">
+        <img src="${recipe.image}" alt="example-card">
+    </div>
+    <div class="card-content">
+        <div class="content">
+            <p>${recipe.title}</p>
+        </div>
+        <button class="js-modal-trigger button mx-auto" data-target="modal-js-example" data-recipe-id=${recipe.id}>view</button>
+    </div>
+</div>
+</div> */}
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
