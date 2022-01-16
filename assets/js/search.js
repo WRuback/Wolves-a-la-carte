@@ -360,7 +360,7 @@ $(async function () {
 });
 
 // --------------- Recipe Render ---------------------
-function renderRecipes(searchResults) {
+async function renderRecipes(searchResults) {
     let display = $("#search-result-display");
     display.empty();
     for (let i = 0; i < searchResults.length; i++) {
@@ -382,6 +382,7 @@ function renderRecipes(searchResults) {
     </div>
     </div>`);
         display.append(card);
+        card = await new Promise(resolve => setTimeout(resolve, 150));
     }
     (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
         const modal = $trigger.getAttribute("data-target");
@@ -394,20 +395,6 @@ function renderRecipes(searchResults) {
         });
     });
 }
-{/* <div class="column is-half">
-
-<div class="card">
-    <div class="card-image">
-        <img src="${recipe.image}" alt="example-card">
-    </div>
-    <div class="card-content">
-        <div class="content">
-            <p>${recipe.title}</p>
-        </div>
-        <button class="js-modal-trigger button mx-auto" data-target="modal-js-example" data-recipe-id=${recipe.id}>view</button>
-    </div>
-</div>
-</div> */}
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
