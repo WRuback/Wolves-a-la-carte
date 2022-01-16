@@ -35,8 +35,10 @@ function testSpoon() {
         });
 }
 // --------------- SpoonApi Calls --------------- //
+var recipeSearch = [];
+var currentRecipeIndex = 0;
 function searchRecipes(searchText) {
-    let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=${searchText}&number=4`;
+    let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=${searchText}&number=20`;
     fetch(url)
         .then(function (response) {
             if (response.status === 401) {
@@ -46,7 +48,9 @@ function searchRecipes(searchText) {
         })
         .then(function (data) {
             console.log(data);
-            renderRecipes(data.results);
+            recipeSearch = data.results;
+            currentRecipeIndex = 0;
+            renderRecipes(recipeSearch,currentRecipeIndex);
             // Call card render function.
         });
 }
@@ -360,10 +364,20 @@ $(async function () {
 });
 
 // --------------- Recipe Render ---------------------
-async function renderRecipes(searchResults) {
+async function renderRecipes(searchResults, startIndex) {
     let display = $("#search-result-display");
     display.empty();
-    for (let i = 0; i < searchResults.length; i++) {
+    renderScrollPosition();
+    $("#scroll-buttons-bottom").addClass("is-hidden");
+    $("#scroll-buttons-top").addClass("is-hidden");
+    if (searchResults.length === 0){
+        display.append(`<div class="column box"> 
+        <div class = "content">
+            <p class = "p-3"> Sorry, we could not find anything </p> </div> </div>`);
+        return;
+    }
+    $("#scroll-buttons-top").removeClass("is-hidden");
+    for (let i = startIndex; i < startIndex+4 && i < searchResults.length; i++) {
         let recipe = searchResults[i];
         console.log(recipe);
         let card = $(`<div class="column is-half">
@@ -384,6 +398,7 @@ async function renderRecipes(searchResults) {
         display.append(card);
         card = await new Promise(resolve => setTimeout(resolve, 150));
     }
+    $("#scroll-buttons-bottom").removeClass("is-hidden");
     (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
         const modal = $trigger.getAttribute("data-target");
         const $target = document.getElementById(modal);
@@ -395,6 +410,32 @@ async function renderRecipes(searchResults) {
         });
     });
 }
+function renderScrollPosition(){
+    $(".scroll-position").each(function(){
+        $(this).text("Page " + Math.floor(((currentRecipeIndex + 1)/4)+1) + " of " + Math.ceil(recipeSearch.length/4));
+    })
+}
+$(function(){
+    $(".scroll-left").each(function(){
+        $(this).on("click", function(){
+            console.log("clicked Left");
+            if(currentRecipeIndex !== 0){
+                currentRecipeIndex = currentRecipeIndex-4;
+                renderRecipes(recipeSearch, currentRecipeIndex);
+
+            }
+        });
+    });
+    $(".scroll-right").each(function(){
+        $(this).on("click", function(){
+            console.log("clicked Right");
+            if(recipeSearch !== [] && currentRecipeIndex < recipeSearch.length-4){
+                currentRecipeIndex = currentRecipeIndex+4;
+                renderRecipes(recipeSearch, currentRecipeIndex);
+            }
+        });
+    });
+})
 // ---------------Modal functionality - Cole ---------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Functions to open and close a modal
