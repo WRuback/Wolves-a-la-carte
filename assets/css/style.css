@@ -6,7 +6,8 @@
     background-attachment: fixed;
     background-size:  cover;
     background-color: black;
-    
+    min-height:100vh;
+    height: auto;
 }
 /* Add padding to the previously viewed recipes - Dre*/
 .pt-5 {
@@ -20,6 +21,7 @@
     background-attachment: fixed;
     background-size:  cover;
     background-color: black;
+    height:100vh;
 }
 /* Lower the padding around the search bar - Dre */
 .box {
@@ -32,15 +34,39 @@
     padding-bottom: -2rem;
 }
 /* Change the padding of the card */
-.card-content {
+.custom-card-content {
     background-color: transparent;
     padding: 2.9rem;
 }
 /* Fill out all of the margins */
-.card-footer {
+.custom-card-footer {
     background-color: transparent;
     border-top: 0px solid #ededed;
     align-items: stretch;
     display: flex;
 }
 
+/* Makes images in recipe cards fit fully despite graphics. */
+.recipe-img{
+    width:100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity:0;
+        transform: scale(70%);
+    }
+    to {
+        opacity:1;
+        transform: scale(100%);
+    }
+  }
+
+.recipe-card{
+    position: relative;
+    animation-name: fade-in;
+    animation-duration: 0.5s;
+}
