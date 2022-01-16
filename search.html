@@ -55,7 +55,7 @@
             </aside>
 
             <!-- This will contain the searchbar and results. -->
-            <main class="column is-two-thirds">
+            <main class="column is-two-thirds is-flex  is-flex-direction-column justify-content-center ">
                 <!-- Add search bar here. -->
                 <div class="box m-5">
                     <form action="">
@@ -74,6 +74,11 @@
                     </form>
                 </div>
                 <!-- This contains the search result cards. -->
+                <div class="is-flex mx-auto justify-content-center is-hidden" id="scroll-buttons-top">
+                    <button class="button scroll-left mx-3"><i class="fas fa-caret-left"></i></button>
+                    <button class="button is-static is-white scroll-position">Page 1 of 1</i></button>
+                    <button class="button scroll-right mx-3"><i class="fas fa-caret-right"></i></button>
+                </div>
                 <div class="px-5">
                     <div class="columns is-multiline p-5" id="search-result-display">
                         <!-- <div class="column is-half">
@@ -93,7 +98,11 @@
                         </div> -->
                     </div>
                 </div>
-
+                <div class="is-flex mx-auto justify-content-center is-hidden" id="scroll-buttons-bottom">
+                    <button class="button scroll-left mx-3"><i class="fas fa-caret-left"></i></button>
+                    <button class="button is-static is-white scroll-position">Page 1 of 1</i></button>
+                    <button class="button scroll-right mx-3"><i class="fas fa-caret-right"></i></button>
+                </div>
             </main>
         </div>
     </section>
