@@ -362,7 +362,8 @@ function searchbarSetUp(){
     });
 }
 
-// Sets up the favorite dropdown with the local storage items, and on click events.
+// Sets up the favorite dropdown with the local storage items, 
+// and on click events.
 function favoritesSetUp(){
     pullFavorites();
     renderFavorites();
