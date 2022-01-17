@@ -114,7 +114,6 @@ function buildModal() {
   (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
     const modal = $trigger.dataset.target;
     const $target = document.getElementById(modal);
-    console.log($target);
 
     $trigger.addEventListener('click', () => {
       openModal($target);
