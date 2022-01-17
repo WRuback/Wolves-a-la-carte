@@ -126,6 +126,7 @@ function renderModal(searchResults) {
     $("#loading-display").addClass("is-hidden");
     //calls render to previous divs button
     renderPreviousViewed(searchResults);
+    sessionStorage.setItem("previousViewedRecipes",JSON.stringify(previousViewedRecipes));
     return;
 }
 function displayModalLoading() {
@@ -514,6 +515,14 @@ function renderPreviousViewed(recipe) {
     return;
 }
 
+$(function(){
+    let storedViewedRecipes = JSON.parse(sessionStorage.getItem("previousViewedRecipes"));
+    if(storedViewedRecipes !== null){
+        for (const i in storedViewedRecipes) {
+            renderPreviousViewed(storedViewedRecipes[i]);
+        }
+    }
+});
 // ---------------------- View History Event Listener | Ezequiel --------------------------
 $("#previous-views").on("click", function (event) {
     var node = event.target.nodeName;
