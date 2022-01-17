@@ -19,20 +19,27 @@
     <header>
         <nav class="navbar is-light is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a href="./index.html"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
+                <a href="./index.html"><i class="fab fa-wolf-pack-battalion is-size-1 py-3 pl-1"></i></a>
                 <h1 class="navbar-item is-size-2">a La Carte
                     <span class="icon">
                         <i class="fas fa-utensils"></i>
                     </span>
                     <span></span>
                 </h1>
+                <a role="button" class="navbar-burger " aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                  </a>
             </div>
-            <div class="navbar-end">
-                <div class="navbar-item has-dropdown is-hoverable  pl-6 is-size-4 is-align-items-center">
-                    <a class="nav-link">
-                        Favorite Recipes
-                    </a>
-                    <div class="navbar-dropdown" id="favorites-dropdown">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
+                        <a class="nav-link">
+                            Favorite Recipes
+                        </a>
+                        <div class="navbar-dropdown is-right" id="favorites-dropdown">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,7 +131,7 @@
                         <h1 class="has-text-weight-bold is-size-4" id="recipe-title"></h1>
                         <img src="" alt="product" id="recipe-image">
                         <div class="buttons are-medium">
-                            <a class="button" id="recipe-Url">Recipe Instructions</a>
+                            <a class="button" id="recipe-Url" target="_blank">Recipe Instructions</a>
                             <button class="button" id="favorite-button">
                                 <i class="fas fa-heart"></i>
                             </button>
