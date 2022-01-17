@@ -13,6 +13,7 @@ var totalPrice = 0;
 
 
 // --------------- SpoonApi Calls --------------- //
+// Gets the recipe search information, and calls the search render on success.
 function searchRecipes(searchText) {
     let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=${searchText}&number=20`;
     fetch(url)
@@ -31,6 +32,7 @@ function searchRecipes(searchText) {
         });
 }
 
+// Gets the detailed recipe information, and returns it.
 async function findRecipeInfo(recipeID) {
     let url = ` https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=${spoonKey}&includeNutrition=false`;
     let output = await fetch(url)
@@ -49,6 +51,7 @@ async function findRecipeInfo(recipeID) {
 }
 
 // --------------- Kroger API Calls | Ezequiel -----------------------
+// Loops through the given recipe list, gets the OAuthKey, and call the kroger search.
 async function getIngredients(productsArray) {
     $("#ingredientCostList").empty();
     totalPrice = 0;
@@ -57,6 +60,7 @@ async function getIngredients(productsArray) {
     });
     let key = await krogerOAuth();
     console.log(key);
+    // Spaces out the kroger search calls to not overload them, getting a new key every few products.
     for (var i = 0; i < productsArray.length; i++) {
         if(i%6 === 0){
             key = await new Promise(resolve => setTimeout(resolve, 500));
@@ -67,6 +71,7 @@ async function getIngredients(productsArray) {
     $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
 }
 
+// Gets the authorization key from Kroger. Needed to access there list.
 async function krogerOAuth() {
     var settings = {
         "async": true,
@@ -91,6 +96,7 @@ async function krogerOAuth() {
     return output;
 }
 
+// Grabs search result from Kroger, searches through the results, and calls the render on the correct one.
 function krogerProductSearch(product, token, index) {
     var settings = {
         "async": true,
@@ -131,6 +137,7 @@ function krogerProductSearch(product, token, index) {
 }
 
 // --------------- Render Ingredient Cost List | Ezequiel --------------------
+// Renders the ingredient and price in the speific list section it belongs too.
 function renderKrogerIngredientCost(price, product, index) {
     var listNode = `${product} - ${price}`;
     $("#ingredientCostList").children().eq(index).text(listNode);
@@ -140,6 +147,7 @@ function renderKrogerIngredientCost(price, product, index) {
 }
 
 // --------------- Recipe Render ---------------------
+// Renders the search results, staggering the items being added so they fade in.
 async function renderRecipes(searchResults, startIndex) {
     let display = $("#search-result-display");
     display.empty();
@@ -187,6 +195,7 @@ async function renderRecipes(searchResults, startIndex) {
     });
 }
 
+// Changes the scroll page display.
 function renderScrollPosition(){
     $(".scroll-position").each(function(){
         $(this).text("Page " + Math.floor(((currentRecipeIndex + 1)/4)+1) + " of " + Math.ceil(recipeSearch.length/4));
@@ -194,6 +203,7 @@ function renderScrollPosition(){
 }
 
 // --------------- Load Modal -------------------
+// Renders the information for the modal, and finds the recipe.
 async function loadRecipeModal(buttonTarget) {
     displayModalLoading();
     let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
@@ -201,6 +211,7 @@ async function loadRecipeModal(buttonTarget) {
 }
 
 // ------------------- Modal Render -----------
+// Populates the modal with the recipe information, and calls for the kroger search, setting up the list section they will be placed in.
 function renderModal(searchResults) {
     $("#recipe-Url").attr("href", searchResults.sourceUrl);
     $("#recipe-title").text(searchResults.title);
@@ -255,6 +266,8 @@ function renderModal(searchResults) {
     sessionStorage.setItem("previousViewedRecipes",JSON.stringify(previousViewedRecipes));
     return;
 }
+
+// Puts up the loading screen for the modal.
 function displayModalLoading() {
     $("#recipe-display").addClass("is-hidden");
     $("#loading-display").removeClass("is-hidden");
@@ -262,17 +275,20 @@ function displayModalLoading() {
 }
 
 // --------------- favorite Recipe functionality ------------------------
+// Pulls favorites from local storage.
 function pullFavorites() {
     var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
     pulledFavorites !== null ? favoritedItems = pulledFavorites : null;
     return;
 }
 
+// Saves the favorites to local storage.
 function saveFavorites() {
     localStorage.setItem("favorites", JSON.stringify(favoritedItems));
     return;
 }
 
+// Adds a new favorite, renders and saves it.
 function addFavorite(recipeName, recipeID) {
     favoritedItems.push({
         name: recipeName,
@@ -282,6 +298,7 @@ function addFavorite(recipeName, recipeID) {
     renderFavorites();
 }
 
+// Removes a favorite, then saves the removal and re-renders the list. 
 function removeFavorite(recipeID) {
     let newFav = favoritedItems;
     for (let i = 0; i < newFav.length; i++) {
@@ -295,6 +312,7 @@ function removeFavorite(recipeID) {
     renderFavorites();
 }
 
+// Renders the favorite list into the dropdown.
 function renderFavorites() {
     let favoriteList = $("#favorites-dropdown");
     favoriteList.empty()
@@ -312,6 +330,7 @@ function renderFavorites() {
 };
 
 // ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
+// Renders a new previous view button, and adds the item to the list.
 function renderPreviousViewed(recipe) {
     var numButtons = document.querySelectorAll(".previousRecipe");
     if (numButtons.length === 6) {
