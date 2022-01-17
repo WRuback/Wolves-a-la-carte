@@ -24,7 +24,7 @@
     height:100vh;
 }
 /* Lower the padding around the search bar - Dre */
-.box {
+.custom-box {
     padding: 0.0rem;
 }
 /* Fill out the images inside the card */
