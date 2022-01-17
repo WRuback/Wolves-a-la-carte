@@ -18,20 +18,27 @@
     <header>
         <nav class="navbar is-light is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a href="./index.html"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
+                <a href="./index.html"><i class="fab fa-wolf-pack-battalion is-size-1 py-3 pl-1"></i></a>
                 <h1 class="navbar-item is-size-2">a La Carte
                     <span class="icon">
                         <i class="fas fa-utensils"></i>
                     </span>
                     <span></span>
                 </h1>
+                <a role="button" class="navbar-burger " aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-            <div class="navbar-end">
-                <div class="navbar-item has-dropdown is-hoverable  pl-6 is-size-4 is-align-items-center">
-                    <a class="nav-link">
-                        Favorite Recipes
-                    </a>
-                    <div class="navbar-dropdown" id="favorites-dropdown">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown is-hoverable pl-6 is-size-4 is-align-items-center">
+                        <a class="nav-link">
+                            Favorite Recipes
+                        </a>
+                        <div class="navbar-dropdown is-right" id="favorites-dropdown">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,85 +46,84 @@
     </header>
 
     <section class="hero is-fullheight-with-navbar ">
-        <div>
-            <h1 class="title has-text-centered title has-text-white m-5">Find your new favorite recipes, and how much
-                they cost!</h1>
-        </div>
-
-        <!-- Added Searchbar - Billy -->
-        <div class="box custom-box mx-5">
-            <form action="">
-                <div class="field has-addons">
-                    <div class="control is-expanded has-icons-left has-icons-right">
-                        <input id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-utensils"></i>
-                        </span>
+        <div class="container">
+            <div>
+                <h1 class="title has-text-centered title has-text-white m-5">Find your new favorite recipes, and how
+                    much
+                    they cost!</h1>
+            </div>
+            <!-- Added Searchbar - Billy -->
+            <div class="box custom-box mx-5">
+                <form action="">
+                    <div class="field has-addons">
+                        <div class="control is-expanded has-icons-left has-icons-right">
+                            <input id="search-bar" type="text" class="input is-fullwidth" placeholder="Search Recipes">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-utensils"></i>
+                            </span>
+                        </div>
+                        <div class="control">
+                            <button id="search-bar-submit" type="submit" class="button is-link">Find</button>
+                        </div>
                     </div>
-                    <div class="control">
-                        <button id="search-bar-submit" type="submit" class="button is-link">Find</button>
+                </form>
+            </div>
+            <!-- Seach bar / landing page - Dre -->
+            <div class="box m-5">
+                <p class="has-text-centered is-size-6"> Wolves Al A Carte lets you search up a wide array of recipes.
+                    Then, when you click one to view in more detail, it will generate a list of products and there
+                    approx. total cost, so you will know if this meal is affordable for you!</p>
+            </div>
+            <h1 class="title has-text-centered is-size-4 title has-text-white">Wolves' Recommended Recipes!</h1>
+            <div class="columns is-centered m-5 is-8 is-variable">
+                <div class="column is-4-tablet">
+                    <div class="card recipe-card">
+                        <div class="card-image is-1by1 is-fullwidth">
+                            <img class="recipe-img is-fullwidth"
+                                src="https://spoonacular.com/recipeImages/639450-312x231.jpg" alt="Cinnamon Cookies">
+                        </div>
+                        <div class="card-content">
+                            <div class="content has-text-centered">Cinnamon Cookies</div>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="#" class="card-footer-item js-modal-trigger" data-target="modal-js-cookie">View</a>
+                        </footer>
                     </div>
                 </div>
-            </form>
-        </div>
-
-        <div class="bg-img"></div>
-      
-        <!-- Seach bar / landing page - Dre -->
-        <section class="section">
-            <div class="container">
-                <h1 class="title has-text-centered is-size-4 title has-text-white">Wolves Recommended Recipes!</h1>
-                <div class="columns is-centered mt-5 is-8 is-variable">
-                    <div class="column is-4-tablet is-3-desktop">
-                        <div class="card recipe-card">
-                            <div class="card-image is-1by1 is-fullwidth">
-                                <img class="recipe-img is-fullwidth"
-                                    src="https://spoonacular.com/recipeImages/639450-312x231.jpg"
-                                    alt="Cinnamon Cookies">
-                            </div>
-                            <div class="card-content">
-                                <div class="content has-text-centered">Cinnamon Cookies</div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="card-footer-item js-modal-trigger"
-                                    data-target="modal-js-cookie">View</a>
-                            </footer>
+                <div class="column is-4-tablet">
+                    <div class="card recipe-card">
+                        <div class="card-image is-1by1 is-fullwidth">
+                            <img class="recipe-img is-fullwidth"
+                                src="https://spoonacular.com/recipeImages/648303-312x231.jpg" alt="Itty Bitty Burgers">
                         </div>
-                    </div>
-                    <div class="column is-4-tablet is-3-desktop">
-                        <div class="card recipe-card">
-                            <div class="card-image is-1by1 is-fullwidth">
-                                <img class="recipe-img is-fullwidth"
-                                    src="https://spoonacular.com/recipeImages/648303-312x231.jpg"
-                                    alt="Itty Bitty Burgers">
-                            </div>
-                            <div class="card-content">
-                                <div class="content has-text-centered">Itty Bitty Burgers</div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="card-footer-item js-modal-trigger"
-                                    data-target="modal-js-burger">View</a>
-                            </footer>
+                        <div class="card-content">
+                            <div class="content has-text-centered">Itty Bitty Burgers</div>
                         </div>
-                    </div>
-                    <div class="column is-4-tablet is-3-desktop">
-                        <div class="card recipe-card">
-                            <div class="card-image is-1by1 is-fullwidth">
-                                <img class="recipe-img is-fullwidth"
-                                    src="https://spoonacular.com/recipeImages/1096212-312x231.jpg"
-                                    alt="Keto Cheesecake">
-                            </div>
-                            <div class="card-content">
-                                <div class="content has-text-centered">Keto Cheesecake</div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="card-footer-item js-modal-trigger"
-                                    data-target="modal-js-cheesecake">View</a>
-                            </footer>
-                        </div>
+                        <footer class="card-footer">
+                            <a href="#" class="card-footer-item js-modal-trigger" data-target="modal-js-burger">View</a>
+                        </footer>
                     </div>
                 </div>
-        </section>
+                <div class="column is-4-tablet">
+                    <div class="card recipe-card">
+                        <div class="card-image is-1by1 is-fullwidth">
+                            <img class="recipe-img is-fullwidth"
+                                src="https://spoonacular.com/recipeImages/1096212-312x231.jpg" alt="Keto Cheesecake">
+                        </div>
+                        <div class="card-content">
+                            <div class="content has-text-centered">Keto Cheesecake</div>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="#" class="card-footer-item js-modal-trigger"
+                                data-target="modal-js-cheesecake">View</a>
+                        </footer>
+                    </div>
+                    <!-- <button class="button is-normal is-fullwidth is-link is-outlined" class="js-modal-trigger" data-target="modal-js-cheesecake">
+                                            View
+                                        </button> -->
+                </div>
+            </div>
+        </div>
     </section>
     <!-- Added static modals for recommended - Cole -->
     <div id="modal-js-cookie" class="modal">
@@ -125,9 +131,10 @@
         <div class="modal-content">
             <div class="box">
                 <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                <div class="columns is-mobile" id="recipe-display">
+                <div class="columns reverse-column-mobile" id="recipe-display">
 
                     <div class="column">
+                        <hr>
                         <div>
                             <ul id="ingredientList">
                                 <li>1 teaspoon baking soda</li>
@@ -142,7 +149,7 @@
                         <hr>
                         <div>
                             <ul id="ingredientCostList">
-                                <li>Kroger® Sugar Cones - 1.99</li>
+                                <li>Kroger® Pure Baking Soda - 0.79</li>
                                 <li>Kroger® Original Sour Cream E-Z Squeeze Bottle - 2.19</li>
                                 <li>Kroger® Cage Free Grade A Large Brown Eggs - 2.99</li>
                                 <li>Kroger® Bleached Self Rising Enriched Flour - 2.19</li>
@@ -150,23 +157,19 @@
                                 <li>Kroger® All-Vegetable Shortening - 6.99</li>
                                 <li>Kroger® Pure Cane Granulated Sugar - 2.49</li>
                             </ul>
-                            <hr>
-                            <p id="ingredientCost">Total Cost: 13.85</p>
                         </div>
+                        <hr>
                     </div>
                     <div class="column">
-                        <h1 id="recipe-title">Cinnamon Cookies</h1>
+                        <h1 class="has-text-weight-bold is-size-4" id="recipe-title">Cinnamon Cookies</h1>
                         <img src="https://spoonacular.com/recipeImages/639450-556x370.jpg" alt="product"
                             id="recipe-image">
                         <div class="buttons are-medium">
-                            <a class="button" id="recipe-Url"
+                            <a class="button" id="recipe-Url" target="_blank"
                                 href="http://www.foodista.com/recipe/JJJYDXTH/cinnamon-cookies">Recipe
                                 Instructions</a>
-                            <button class="button has-text-danger" id="favorite-button" data-recipe-id="639450"
-                                data-title="Cinnamon Cookies">
-                                <i class="fas fa-heart" aria-hidden="true"></i>
-                            </button>
                         </div>
+                        <p class="has-text-weight-bold is-size-4" id="ingredientCost">Total Cost: 18.13</p>
                     </div>
                 </div>
             </div>
@@ -179,9 +182,10 @@
         <div class="modal-content">
             <div class="box">
                 <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                <div class="columns is-mobile" id="recipe-display">
+                <div class="columns reverse-column-mobile" id="recipe-display">
 
                     <div class="column">
+                        <hr>
                         <div>
                             <ul id="ingredientList">
                                 <li>1 a handful of fresh baby spinach (or lettuce) cut into inch pieces</li>
@@ -206,23 +210,19 @@
                                 <li>Kroger® Spicy Brown Mustard - 1.25</li>
                                 <li>Kroger® Celebration Round Wooden Colored Toothpicks - 1.49</li>
                             </ul>
-                            <hr>
-                            <p id="ingredientCost">Total Cost: 23.03</p>
                         </div>
+                        <hr>
                     </div>
                     <div class="column">
-                        <h1 id="recipe-title">Itty Bitty Burgers</h1>
+                        <h1 class="has-text-weight-bold is-size-4" id="recipe-title">Itty Bitty Burgers</h1>
                         <img src="https://spoonacular.com/recipeImages/648303-556x370.jpg" alt="product"
                             id="recipe-image">
                         <div class="buttons are-medium">
-                            <a class="button" id="recipe-Url"
+                            <a class="button" id="recipe-Url" target="_blank"
                                 href="http://www.foodista.com/recipe/5XQJ4WFT/itty-bitty-burgers">Recipe
                                 Instructions</a>
-                            <button class="button has-text-danger" id="favorite-button" data-recipe-id="648303"
-                                data-title="Itty Bitty Burgers">
-                                <i class="fas fa-heart" aria-hidden="true"></i>
-                            </button>
                         </div>
+                        <p class="has-text-weight-bold is-size-4" id="ingredientCost">Total Cost: 23.03</p>
                     </div>
                 </div>
             </div>
@@ -235,9 +235,10 @@
         <div class="modal-content">
             <div class="box">
                 <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                <div class="columns is-mobile" id="recipe-display">
+                <div class="columns reverse-column-mobile" id="recipe-display">
 
                     <div class="column">
+                        <hr>
                         <div>
                             <ul id="ingredientList">
                                 <li>2 cups sliced almonds</li>
@@ -262,23 +263,19 @@
                                 <li>Kroger® Pure Vanilla Extract - 5.99</li>
                                 <li>Sour Cream E-Z Squeeze Bottle - 2.19</li>
                             </ul>
-                            <hr>
-                            <p id="ingredientCost">Total Cost: 20.54</p>
                         </div>
+                        <hr>
                     </div>
                     <div class="column">
-                        <h1 id="recipe-title">Keto Cheesecake</h1>
+                        <h1 class="has-text-weight-bold is-size-4" id="recipe-title">Keto Cheesecake</h1>
                         <img src="https://spoonacular.com/recipeImages/1096212-556x370.jpg" alt="product"
                             id="recipe-image">
                         <div class="buttons are-medium">
-                            <a class="button" id="recipe-Url"
+                            <a class="button" id="recipe-Url" target="_blank"
                                 href="https://www.foodista.com/recipe/ZXF363M4/keto-cheesecake">Recipe
                                 Instructions</a>
-                            <button class="button" id="favorite-button" data-recipe-id="1096212"
-                                data-title="Keto Cheesecake">
-                                <i class="fas fa-heart" aria-hidden="true"></i>
-                            </button>
                         </div>
+                        <p class="has-text-weight-bold is-size-4" id="ingredientCost">Total Cost: 20.54</p>
                     </div>
                 </div>
             </div>

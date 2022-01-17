@@ -1,5 +1,5 @@
 // Used to access the Spoonacular API.
-var spoonKey = "5a7f763992284d77b77935d7425e7be4"
+var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
 // Stores the favorited items from local storage.
 var favoritedItems = [];
 // Stores the recipes previously view in the session, from session storage.
@@ -215,6 +215,7 @@ function renderModal(searchResults) {
     $("#favorite-button").attr("data-recipe-id", searchResults.id);
     $("#favorite-button").attr("data-title", searchResults.title);
     $("#favorite-button").removeClass("has-text-danger");
+    $("#ingredientCost").text("Total Cost: Calc...")
     for (let i = 0; i < favoritedItems.length; i++) {
         if (favoritedItems[i].id == searchResults.id) {
             $("#favorite-button").addClass("has-text-danger");
@@ -245,6 +246,9 @@ function renderModal(searchResults) {
         }
         if (searchResults.extendedIngredients[i].name === "salt") {
             searchResults.extendedIngredients[i].name = "Iodized Salt";
+        }
+        if (searchResults.extendedIngredients[i].name === "baking soda") {
+            searchResults.extendedIngredients[i].name = "pure baking soda";
         }
 
 
@@ -552,6 +556,14 @@ function bulmaModal(){
         if (e.keyCode === 27) { // Escape key
             closeAllModals();
         }
+    });
+
+    $(".navbar-burger").click(function() {
+
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        $(".navbar-burger").toggleClass("is-active");
+        $(".navbar-menu").toggleClass("is-active");
+  
     });
 }
 
