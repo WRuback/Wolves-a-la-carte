@@ -24,7 +24,6 @@ function searchRecipes(searchText) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
             recipeSearch = data.results;
             currentRecipeIndex = 0;
             renderRecipes(recipeSearch,currentRecipeIndex);
@@ -43,7 +42,6 @@ async function findRecipeInfo(recipeID) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
             //   renderRecipes(data.results);
             return data;
         });
@@ -59,7 +57,6 @@ async function getIngredients(productsArray) {
         $("#ingredientCostList").append("<li>...</li>");
     });
     let key = await krogerOAuth();
-    console.log(key);
     // Spaces out the kroger search calls to not overload them, getting a new key every few products.
     for (var i = 0; i < productsArray.length; i++) {
         if(i%6 === 0 && i !== 0){
@@ -89,8 +86,6 @@ async function krogerOAuth() {
     }
 
     let output = await $.ajax(settings).done(function (response) {
-        console.log("OAuth \n -----------");
-        console.log(response);
         return response.access_token;
     });
     return output;
@@ -111,8 +106,7 @@ function krogerProductSearch(product, token, index) {
     let productPrice = 0;
     let productName = "Could not be found";
     $.ajax(settings).done(function (response) {
-        console.log(product.name);
-        console.log(response);
+
         if (response.data.length !== 0) {
             if (product.aisle === "") {
                 productPrice = response.data[0].items[0].price.regular;
@@ -167,7 +161,6 @@ async function renderRecipes(searchResults, startIndex) {
     $("#scroll-buttons-top").removeClass("is-hidden");
     for (let i = startIndex; i < startIndex+4 && i < searchResults.length; i++) {
         let recipe = searchResults[i];
-        console.log(recipe);
         let card = $(`<div class="column is-half">
         <div class="card recipe-card">
         <div class="card-image is-1by1 is-fullwidth">
@@ -190,7 +183,6 @@ async function renderRecipes(searchResults, startIndex) {
     (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
         const modal = $trigger.getAttribute("data-target");
         const $target = document.getElementById(modal);
-        console.log($target);
 
         $trigger.addEventListener('click', (event) => {
             $target.classList.add('is-active');
@@ -261,7 +253,6 @@ function renderModal(searchResults) {
             aisle: ingredientSection
         });
     }
-    console.log(ingredients);
     getIngredients(ingredients);
     $("#recipe-display").removeClass("is-hidden");
     $("#loading-display").addClass("is-hidden");
@@ -433,7 +424,6 @@ function favoriteButtonSetUp(){
 function scrollButtonSetup(){
     $(".scroll-left").each(function(){
         $(this).on("click", function(){
-            console.log("clicked Left");
             if(currentRecipeIndex !== 0){
                 currentRecipeIndex = currentRecipeIndex-4;
                 renderRecipes(recipeSearch, currentRecipeIndex);
@@ -443,7 +433,6 @@ function scrollButtonSetup(){
     });
     $(".scroll-right").each(function(){
         $(this).on("click", function(){
-            console.log("clicked Right");
             if(recipeSearch !== [] && currentRecipeIndex < recipeSearch.length-4){
                 currentRecipeIndex = currentRecipeIndex+4;
                 renderRecipes(recipeSearch, currentRecipeIndex);
@@ -486,7 +475,6 @@ function previousRecipeSetUp(){
                 }
             }
         }
-        console.log(recipePreviousIndex);
         if (node === "BUTTON" || node === "SPAN" || node === "I") {
             renderModal(previousViewedRecipes[recipePreviousIndex]);
             $("#modal-js-example").addClass("is-active");
@@ -542,7 +530,6 @@ function bulmaModal(){
     (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
         const modal = $trigger.dataset.target;
         const $target = document.getElementById(modal);
-        console.log($target);
 
         $trigger.addEventListener('click', () => {
             openModal($target);
