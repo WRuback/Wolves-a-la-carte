@@ -1,42 +1,19 @@
+// Used to access the Spoonacular API.
 var spoonKey = "5a7f763992284d77b77935d7425e7be4"
+// Stores the favorited items from local storage.
+var favoritedItems = [];
+// Stores the recipes previously view in the session, from session storage.
 var previousViewedRecipes = [];
+// Stores the result of the Spoonacular Recipe search.
+var recipeSearch = [];
+// Stores the first index of the currently displayed search results.
+var currentRecipeIndex = 0;
+// Stores the total price of the current modal recipe display.
 var totalPrice = 0;
 
-// Autocomplete on searchbar.
-$(function () {
-    $("#search-bar").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
-                dataType: "json",
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return {
-                            value: item.title
-                        };
-                    }));
-                }
-            });
-        }
-    });
-});
 
-function testSpoon() {
-    let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=pasta&maxFat=25&number=2`;
-    fetch(url)
-        .then(function (response) {
-            if (response.status === 401) {
-                console.log("You failed!");
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            console.log(data);
-        });
-}
 // --------------- SpoonApi Calls --------------- //
-var recipeSearch = [];
-var currentRecipeIndex = 0;
+// Gets the recipe search information, and calls the search render on success.
 function searchRecipes(searchText) {
     let url = ` https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonKey}&query=${searchText}&number=20`;
     fetch(url)
@@ -55,6 +32,7 @@ function searchRecipes(searchText) {
         });
 }
 
+// Gets the detailed recipe information, and returns it.
 async function findRecipeInfo(recipeID) {
     let url = ` https://api.spoonacular.com/recipes/${recipeID}/information?apiKey=${spoonKey}&includeNutrition=false`;
     let output = await fetch(url)
@@ -72,9 +50,168 @@ async function findRecipeInfo(recipeID) {
     return output;
 }
 
+// --------------- Kroger API Calls | Ezequiel -----------------------
+// Loops through the given recipe list, gets the OAuthKey, and call the kroger search.
+async function getIngredients(productsArray) {
+    $("#ingredientCostList").empty();
+    totalPrice = 0;
+    productsArray.forEach(element => {
+        $("#ingredientCostList").append("<li>...</li>");
+    });
+    let key = await krogerOAuth();
+    console.log(key);
+    // Spaces out the kroger search calls to not overload them, getting a new key every few products.
+    for (var i = 0; i < productsArray.length; i++) {
+        if(i%6 === 0){
+            key = await new Promise(resolve => setTimeout(resolve, 500));
+            key = await krogerOAuth();
+        }
+        krogerProductSearch(productsArray[i], key.access_token, i);
+    }
+    $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+}
 
+// Gets the authorization key from Kroger. Needed to access there list.
+async function krogerOAuth() {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.kroger.com/v1/connect/oauth2/token",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Basic ${btoa("alacarte-5eeec0e7609a3bd05dd6a26e58bf693c8345549143926607028:lVV6pPI3QIkf7Uy_oc71cuVIVSxeV5MSMDoUBgZH")}`
+        },
+        "data": {
+            "grant_type": "client_credentials",
+            "scope": "product.compact"
+        }
+    }
+
+    let output = await $.ajax(settings).done(function (response) {
+        console.log("OAuth \n -----------");
+        console.log(response);
+        return response.access_token;
+    });
+    return output;
+}
+
+// Grabs search result from Kroger, searches through the results, and calls the render on the correct one.
+function krogerProductSearch(product, token, index) {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product.name}&filter.locationId=01400943`,
+        "method": "GET",
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+    let productPrice = 0;
+    let productName = "Could not be found";
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        if (response.data.length !== 0) {
+            if (product.aisle === "") {
+                productPrice = response.data[0].items[0].price.regular;
+                productName = response.data[0].description;
+            } else {
+                for (const item in response.data) {
+                    if (product.aisle == response.data[item].categories[0]) {
+                        productPrice = response.data[item].items[0].price.regular;
+                        productName = response.data[item].description;
+                        break;
+                    }
+                }
+            }
+        }
+        renderKrogerIngredientCost(productPrice, productName, index)
+        totalPrice += productPrice;
+        $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
+    }).fail(function () {
+        renderKrogerIngredientCost(productPrice, productName, index)
+    });
+
+    return;
+}
+
+// --------------- Render Ingredient Cost List | Ezequiel --------------------
+// Renders the ingredient and price in the speific list section it belongs too.
+function renderKrogerIngredientCost(price, product, index) {
+    var listNode = `${product} - ${price}`;
+    $("#ingredientCostList").children().eq(index).text(listNode);
+
+
+    return;
+}
+
+// --------------- Recipe Render ---------------------
+// Renders the search results, staggering the items being added so they fade in.
+async function renderRecipes(searchResults, startIndex) {
+    let display = $("#search-result-display");
+    display.empty();
+    renderScrollPosition();
+    $("#scroll-buttons-bottom").addClass("is-hidden");
+    $("#scroll-buttons-top").addClass("is-hidden");
+    if (searchResults.length === 0){
+        display.append(`<div class="column box"> 
+        <div class = "content">
+            <p class = "p-3"> Sorry, we could not find anything </p> </div> </div>`);
+        return;
+    }
+    $("#scroll-buttons-top").removeClass("is-hidden");
+    for (let i = startIndex; i < startIndex+4 && i < searchResults.length; i++) {
+        let recipe = searchResults[i];
+        console.log(recipe);
+        let card = $(`<div class="column is-half">
+        <div class="card recipe-card">
+        <div class="card-image is-1by1 is-fullwidth">
+            <img class="recipe-img is-fullwidth"
+                src="${recipe.image}" alt="${recipe.title}">
+        </div>
+        <div class="card-content">
+            <div class="content has-text-centered">${recipe.title}</div>
+        </div>
+        <footer class="card-footer">
+            <a href="#" class="card-footer-item js-modal-trigger"
+                data-target="modal-js-example" data-recipe-id=${recipe.id}>View</a>
+        </footer>
+    </div>
+    </div>`);
+        display.append(card);
+        card = await new Promise(resolve => setTimeout(resolve, 150));
+    }
+    $("#scroll-buttons-bottom").removeClass("is-hidden");
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+        const modal = $trigger.getAttribute("data-target");
+        const $target = document.getElementById(modal);
+        console.log($target);
+
+        $trigger.addEventListener('click', (event) => {
+            $target.classList.add('is-active');
+            loadRecipeModal(event.target);
+        });
+    });
+}
+
+// Changes the scroll page display.
+function renderScrollPosition(){
+    $(".scroll-position").each(function(){
+        $(this).text("Page " + Math.floor(((currentRecipeIndex + 1)/4)+1) + " of " + Math.ceil(recipeSearch.length/4));
+    })
+}
+
+// --------------- Load Modal -------------------
+// Renders the information for the modal, and finds the recipe.
+async function loadRecipeModal(buttonTarget) {
+    displayModalLoading();
+    let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
+    renderModal(recipeInfo);
+}
 
 // ------------------- Modal Render -----------
+// Populates the modal with the recipe information, and calls for the kroger search, setting up the list section they will be placed in.
 function renderModal(searchResults) {
     $("#recipe-Url").attr("href", searchResults.sourceUrl);
     $("#recipe-title").text(searchResults.title);
@@ -126,33 +263,32 @@ function renderModal(searchResults) {
     $("#loading-display").addClass("is-hidden");
     //calls render to previous divs button
     renderPreviousViewed(searchResults);
+    sessionStorage.setItem("previousViewedRecipes",JSON.stringify(previousViewedRecipes));
     return;
 }
+
+// Puts up the loading screen for the modal.
 function displayModalLoading() {
     $("#recipe-display").addClass("is-hidden");
     $("#loading-display").removeClass("is-hidden");
     return;
 }
-// --------------- Load Modal -------------------
-async function loadRecipeModal(buttonTarget) {
-    displayModalLoading();
-    let recipeInfo = await findRecipeInfo(buttonTarget.getAttribute("data-recipe-id"));
-    renderModal(recipeInfo);
-}
-// --------------- favorite Recipe functionality ------------------------
-var favoritedItems = [];
 
+// --------------- favorite Recipe functionality ------------------------
+// Pulls favorites from local storage.
 function pullFavorites() {
     var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
     pulledFavorites !== null ? favoritedItems = pulledFavorites : null;
     return;
 }
 
+// Saves the favorites to local storage.
 function saveFavorites() {
     localStorage.setItem("favorites", JSON.stringify(favoritedItems));
     return;
 }
 
+// Adds a new favorite, renders and saves it.
 function addFavorite(recipeName, recipeID) {
     favoritedItems.push({
         name: recipeName,
@@ -162,6 +298,7 @@ function addFavorite(recipeName, recipeID) {
     renderFavorites();
 }
 
+// Removes a favorite, then saves the removal and re-renders the list. 
 function removeFavorite(recipeID) {
     let newFav = favoritedItems;
     for (let i = 0; i < newFav.length; i++) {
@@ -175,6 +312,7 @@ function removeFavorite(recipeID) {
     renderFavorites();
 }
 
+// Renders the favorite list into the dropdown.
 function renderFavorites() {
     let favoriteList = $("#favorites-dropdown");
     favoriteList.empty()
@@ -191,12 +329,65 @@ function renderFavorites() {
     }
 };
 
-$(function () {
+// ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
+// Renders a new previous view button, and adds the item to the list.
+function renderPreviousViewed(recipe) {
+    var numButtons = document.querySelectorAll(".previousRecipe");
+    if (numButtons.length === 6) {
+        numButtons[0].remove();
+        previousViewedRecipes.shift();
+    }
+
+    var previousViewed = $("#previous-views");
+    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
+    var iconSpan = $("<span>").addClass("icon");
+    var iconNode = $("<i>").addClass("fas fa-utensils");
+    var titleSpan = $("<span>").text(recipe.title);
+
+    iconSpan.append(iconNode);
+    buttonNode.append(iconSpan);
+    buttonNode.append(titleSpan);
+
+    //checks if we already have the button
+    for (var i = 0; i < numButtons.length; i++) {
+        if (recipe.title === numButtons[i].innerText) {
+            return;
+        }
+    }
+
+    previousViewed.append(buttonNode);
+    previousViewedRecipes.push(recipe);
+    return;
+}
+
+// Setup Functions
+
+// Sets up the autocomplete on the search bar.
+function searchbarSetUp(){
+    $("#search-bar").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
+                dataType: "json",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            value: item.title
+                        };
+                    }));
+                }
+            });
+        }
+    });
+}
+
+// Sets up the favorite dropdown with the local storage items, 
+// and on click events.
+function favoritesSetUp(){
     pullFavorites();
     renderFavorites();
     $("#favorites-dropdown").on("click", ".navbar-item", async function (event) {
         event.preventDefault();
-        //console.log(event.target.getAttribute("recipe-id"));
         let target = "";
         if (event.target.nodeName === "SPAN") {
             target = event.target.parentElement;
@@ -211,6 +402,10 @@ $(function () {
         renderModal(recipeInfo);
 
     });
+}
+
+// Sets up the like button on the modal.
+function favoriteButtonSetUp(){
     $("#favorite-button").on("click", function (event) {
         let target = "";
         if (event.target.nodeName === "I") {
@@ -228,119 +423,78 @@ $(function () {
             addFavorite(button.attr("data-title"), button.attr("data-recipe-id"));
         }
     });
-})
-
-// --------------- Kroger API Calls | Ezequiel -----------------------
-async function getIngredients(productsArray) {
-    $("#ingredientCostList").empty();
-    totalPrice = 0;
-    productsArray.forEach(element => {
-        $("#ingredientCostList").append("<li>...</li>");
-    });
-    let key = await krogerOAuth();
-    console.log(key);
-    for (var i = 0; i < productsArray.length; i++) {
-        if(i%6 === 0){
-            key = await new Promise(resolve => setTimeout(resolve, 500));
-            key = await krogerOAuth();
-        }
-        krogerProductSearch(productsArray[i], key.access_token, i);
-    }
-    $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
 }
 
-async function krogerOAuth() {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://api.kroger.com/v1/connect/oauth2/token",
-        "method": "POST",
-        "headers": {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": `Basic ${btoa("alacarte-5eeec0e7609a3bd05dd6a26e58bf693c8345549143926607028:lVV6pPI3QIkf7Uy_oc71cuVIVSxeV5MSMDoUBgZH")}`
-        },
-        "data": {
-            "grant_type": "client_credentials",
-            "scope": "product.compact"
-        }
-    }
+// Sets up scroll buttons to scroll through lists when displayed.
+function scrollButtonSetup(){
+    $(".scroll-left").each(function(){
+        $(this).on("click", function(){
+            console.log("clicked Left");
+            if(currentRecipeIndex !== 0){
+                currentRecipeIndex = currentRecipeIndex-4;
+                renderRecipes(recipeSearch, currentRecipeIndex);
 
-    let output = await $.ajax(settings).done(function (response) {
-        console.log("OAuth \n -----------");
-        console.log(response);
-        return response.access_token;
+            }
+        });
     });
-    return output;
+    $(".scroll-right").each(function(){
+        $(this).on("click", function(){
+            console.log("clicked Right");
+            if(recipeSearch !== [] && currentRecipeIndex < recipeSearch.length-4){
+                currentRecipeIndex = currentRecipeIndex+4;
+                renderRecipes(recipeSearch, currentRecipeIndex);
+            }
+        });
+    });
 }
 
-function krogerProductSearch(product, token, index) {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": `https://floating-headland-95050.herokuapp.com/https://api.kroger.com/v1/products?filter.brand=Kroger&filter.term=${product.name}&filter.locationId=01400943`,
-        "method": "GET",
-        "headers": {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`
+// Sets up the previous recipe aside, using session storage data.
+function previousRecipeSetUp(){
+    let storedViewedRecipes = JSON.parse(sessionStorage.getItem("previousViewedRecipes"));
+    if(storedViewedRecipes !== null){
+        for (const i in storedViewedRecipes) {
+            renderPreviousViewed(storedViewedRecipes[i]);
         }
     }
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        let productPrice = 0;
-        let productName = "Could not be found";
-        if (response.data.length !== 0) {
-            if (product.aisle === "") {
-                productPrice = response.data[0].items[0].price.regular;
-                productName = response.data[0].description;
-            } else {
-                for (const item in response.data) {
-                    if (product.aisle == response.data[item].categories[0]) {
-                        productPrice = response.data[item].items[0].price.regular;
-                        productName = response.data[item].description;
-                        break;
-                    }
+
+    $("#previous-views").on("click", function (event) {
+        var node = event.target.nodeName;
+        var buttonList = document.querySelectorAll(".previousRecipe");
+        if (node === "BUTTON") {
+            for (var i = 0; i < buttonList.length; i++) {
+                if (event.target === buttonList[i]) {
+                    var recipePreviousIndex = i;
+                    break;
+                }
+            }
+        } else if (node === "SPAN") {
+            for (var i = 0; i < buttonList.length; i++) {
+                if (event.target.parentElement === buttonList[i]) {
+                    var recipePreviousIndex = i;
+                    break;
+                }
+            }
+        } else if (node === "I") {
+            for (var i = 0; i < buttonList.length; i++) {
+                if (event.target.parentElement.parentElement === buttonList[i]) {
+                    var recipePreviousIndex = i;
+                    break;
                 }
             }
         }
-        renderKrogerIngredientCost(productPrice, productName, index)
-        totalPrice += productPrice;
-        $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
-    }).fail(function () {
-        let productPrice = 0;
-        let productName = "Could not be found";
-        renderKrogerIngredientCost(productPrice, productName, index)
+        console.log(recipePreviousIndex);
+        if (node === "BUTTON" || node === "SPAN" || node === "I") {
+            renderModal(previousViewedRecipes[recipePreviousIndex]);
+            $("#modal-js-example").addClass("is-active");
+    
+        }
+    
+        return;
     });
-
-    return;
 }
 
-// --------------- Render Ingredient Cost List | Ezequiel --------------------
-
-function renderKrogerIngredientCost(price, product, index) {
-    var listNode = `${product} - ${price}`;
-    $("#ingredientCostList").children().eq(index).text(listNode);
-
-
-    return;
-}
-
-// --------------- Recipe call on submit click - Billy ------------------
-$(function () {
-    // Load recipe search.
-    let loadSearch = document.location.search;
-    if (loadSearch) {
-        let recipeSearch = loadSearch.split("=");
-        if (recipeSearch[0] === "?search") {
-            searchRecipes(recipeSearch[1]);
-        }
-        else if (recipeSearch[0] === "?find") {
-            findRecipeInfo(recipeSearch[1]);
-        }
-    }
-})
-// --------------- Recipe call on submit click - Billy ------------------
-$(async function () {
-    // Load recipe search.
+// If given search or find in the url, preform the search or the find.
+async function landingPageSearchCheckSetup(){
     let loadSearch = document.location.search;
     if (loadSearch) {
         let recipeSearch = loadSearch.split("=");
@@ -361,83 +515,10 @@ $(async function () {
         searchRecipes(searchParameter);
         $("#search-bar").val("");
     })
-});
-
-// --------------- Recipe Render ---------------------
-async function renderRecipes(searchResults, startIndex) {
-    let display = $("#search-result-display");
-    display.empty();
-    renderScrollPosition();
-    $("#scroll-buttons-bottom").addClass("is-hidden");
-    $("#scroll-buttons-top").addClass("is-hidden");
-    if (searchResults.length === 0){
-        display.append(`<div class="column box"> 
-        <div class = "content">
-            <p class = "p-3"> Sorry, we could not find anything </p> </div> </div>`);
-        return;
-    }
-    $("#scroll-buttons-top").removeClass("is-hidden");
-    for (let i = startIndex; i < startIndex+4 && i < searchResults.length; i++) {
-        let recipe = searchResults[i];
-        console.log(recipe);
-        let card = $(`<div class="column is-half">
-        <div class="card recipe-card">
-        <div class="card-image is-1by1 is-fullwidth">
-            <img class="recipe-img is-fullwidth"
-                src="${recipe.image}" alt="${recipe.title}">
-        </div>
-        <div class="card-content">
-            <div class="content has-text-centered">${recipe.title}</div>
-        </div>
-        <footer class="card-footer">
-            <a href="#" class="card-footer-item js-modal-trigger"
-                data-target="modal-js-example" data-recipe-id=${recipe.id}>View</a>
-        </footer>
-    </div>
-    </div>`);
-        display.append(card);
-        card = await new Promise(resolve => setTimeout(resolve, 150));
-    }
-    $("#scroll-buttons-bottom").removeClass("is-hidden");
-    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-        const modal = $trigger.getAttribute("data-target");
-        const $target = document.getElementById(modal);
-        console.log($target);
-
-        $trigger.addEventListener('click', (event) => {
-            $target.classList.add('is-active');
-            loadRecipeModal(event.target);
-        });
-    });
 }
-function renderScrollPosition(){
-    $(".scroll-position").each(function(){
-        $(this).text("Page " + Math.floor(((currentRecipeIndex + 1)/4)+1) + " of " + Math.ceil(recipeSearch.length/4));
-    })
-}
-$(function(){
-    $(".scroll-left").each(function(){
-        $(this).on("click", function(){
-            console.log("clicked Left");
-            if(currentRecipeIndex !== 0){
-                currentRecipeIndex = currentRecipeIndex-4;
-                renderRecipes(recipeSearch, currentRecipeIndex);
 
-            }
-        });
-    });
-    $(".scroll-right").each(function(){
-        $(this).on("click", function(){
-            console.log("clicked Right");
-            if(recipeSearch !== [] && currentRecipeIndex < recipeSearch.length-4){
-                currentRecipeIndex = currentRecipeIndex+4;
-                renderRecipes(recipeSearch, currentRecipeIndex);
-            }
-        });
-    });
-})
-// ---------------Modal functionality - Cole ---------------------------
-document.addEventListener('DOMContentLoaded', () => {
+// The functionality of the bulma modal. Code is from the Bulma Docs.
+function bulmaModal(){
     // Functions to open and close a modal
     function openModal($el) {
         $el.classList.add('is-active');
@@ -481,71 +562,15 @@ document.addEventListener('DOMContentLoaded', () => {
             closeAllModals();
         }
     });
-});
-//testSpoon();
-
-// ---------------- Render Buttons for Previously Viewed Recipes | Ezequiel ---------------------
-function renderPreviousViewed(recipe) {
-    var numButtons = document.querySelectorAll(".previousRecipe");
-    if (numButtons.length === 6) {
-        numButtons[0].remove();
-        previousViewedRecipes.shift();
-    }
-
-    var previousViewed = $("#previous-views");
-    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
-    var iconSpan = $("<span>").addClass("icon");
-    var iconNode = $("<i>").addClass("fas fa-utensils");
-    var titleSpan = $("<span>").text(recipe.title);
-
-    iconSpan.append(iconNode);
-    buttonNode.append(iconSpan);
-    buttonNode.append(titleSpan);
-
-    //checks if we already have the button
-    for (var i = 0; i < numButtons.length; i++) {
-        if (recipe.title === numButtons[i].innerText) {
-            return;
-        }
-    }
-
-    previousViewed.append(buttonNode);
-    previousViewedRecipes.push(recipe);
-    return;
 }
 
-// ---------------------- View History Event Listener | Ezequiel --------------------------
-$("#previous-views").on("click", function (event) {
-    var node = event.target.nodeName;
-    var buttonList = document.querySelectorAll(".previousRecipe");
-    if (node === "BUTTON") {
-        for (var i = 0; i < buttonList.length; i++) {
-            if (event.target === buttonList[i]) {
-                var recipePreviousIndex = i;
-                break;
-            }
-        }
-    } else if (node === "SPAN") {
-        for (var i = 0; i < buttonList.length; i++) {
-            if (event.target.parentElement === buttonList[i]) {
-                var recipePreviousIndex = i;
-                break;
-            }
-        }
-    } else if (node === "I") {
-        for (var i = 0; i < buttonList.length; i++) {
-            if (event.target.parentElement.parentElement === buttonList[i]) {
-                var recipePreviousIndex = i;
-                break;
-            }
-        }
-    }
-    console.log(recipePreviousIndex);
-    if (node === "BUTTON" || node === "SPAN" || node === "I") {
-        renderModal(previousViewedRecipes[recipePreviousIndex]);
-        $("#modal-js-example").addClass("is-active");
-
-    }
-
-    return;
-})
+// The Init Function to set up things on page load.
+$(function(){
+    searchbarSetUp();
+    favoritesSetUp();
+    favoriteButtonSetUp();
+    previousRecipeSetUp();
+    scrollButtonSetup();
+    landingPageSearchCheckSetup();
+    bulmaModal();
+});

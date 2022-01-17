@@ -1,48 +1,23 @@
+// Used to access the Spoonacular API.
 var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
-// Autocomplete on searchbar.
-$(function () {
-  $("#search-bar").autocomplete({
-    source: function (request, response) {
-      $.ajax({
-        url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
-        dataType: "json",
-        success: function (data) {
-          response($.map(data, function (item) {
-            return {
-              value: item.title
-            };
-          }));
-        }
-      });
-    }
-  });
-});
-
-// Going to the search page from the search button.
-$(function () {
-  $("#search-bar-submit").on("click", function (event) {
-    event.preventDefault();
-    let searchParameter = $("#search-bar").val();
-    if (searchParameter !== "") {
-      window.location.href = `./search.html?search=${searchParameter}`;
-    }
-  })
-});
-
-// Favorite Items
+// Stores the favorited items from local storage.
 var favoritedItems = [];
 
+// --------------- favorite Recipe functionality ------------------------
+// Pulls favorites from local storage.
 function pullFavorites() {
   var pulledFavorites = JSON.parse(localStorage.getItem("favorites"));
   pulledFavorites !== null ? favoritedItems = pulledFavorites : null;
   return;
 }
 
+// Saves the favorites to local storage.
 function saveFavorites() {
   localStorage.setItem("favorites", JSON.stringify(favoritedItems));
   return;
 }
 
+// Adds a new favorite, renders and saves it.
 function addFavorite(recipeName, recipeID) {
   favoritedItems.push({
     name: recipeName,
@@ -52,6 +27,7 @@ function addFavorite(recipeName, recipeID) {
   renderFavorites();
 }
 
+// Renders the favorite list into the dropdown.
 function renderFavorites() {
   let favoriteList = $("#favorites-dropdown");
   favoriteList.empty()
@@ -68,7 +44,38 @@ function renderFavorites() {
   }
 };
 
-$(function () {
+// Setup Functions
+
+// Sets up the autocomplete on the search bar, 
+// and sets the search to go to the main page.
+function searchbarSetUp() {
+  $("#search-bar").autocomplete({
+    source: function (request, response) {
+      $.ajax({
+        url: `https://api.spoonacular.com/recipes/autocomplete?apiKey=${spoonKey}&number=5&query=${request.term}`,
+        dataType: "json",
+        success: function (data) {
+          response($.map(data, function (item) {
+            return {
+              value: item.title
+            };
+          }));
+        }
+      });
+    }
+  });
+
+  $("#search-bar-submit").on("click", function (event) {
+    event.preventDefault();
+    let searchParameter = $("#search-bar").val();
+    if (searchParameter !== "") {
+      window.location.href = `./search.html?search=${searchParameter}`;
+    }
+  })
+}
+
+// Sets up the favorite dropdown with the local storage items.
+function favoritesSetUp() {
   pullFavorites();
   renderFavorites();
   $("#favorites-dropdown").on("click", ".navbar-item", function (event) {
@@ -83,10 +90,11 @@ $(function () {
     }
     window.location.href = `./search.html?find=${target.getAttribute("recipe-id")}`;
   });
-})
+}
 
-// ---------------Modal functionality - Cole ---------------------------
-document.addEventListener('DOMContentLoaded', () => {
+// The functionality of the bulma modal. Code is from the Bulma Docs.
+function buildModal() {
+
   // Functions to open and close a modal
   function openModal($el) {
     $el.classList.add('is-active');
@@ -130,4 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAllModals();
     }
   });
+}
+
+// The Init Function to set up things on page load.
+$(function () {
+  searchbarSetUp();
+  favoritesSetUp();
+  buildModal();
 });
