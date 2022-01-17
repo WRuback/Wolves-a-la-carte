@@ -62,8 +62,8 @@ async function getIngredients(productsArray) {
     console.log(key);
     // Spaces out the kroger search calls to not overload them, getting a new key every few products.
     for (var i = 0; i < productsArray.length; i++) {
-        if(i%6 === 0){
-            key = await new Promise(resolve => setTimeout(resolve, 500));
+        if(i%6 === 0 && i !== 0){
+            key = await new Promise(resolve => setTimeout(resolve, 1000));
             key = await krogerOAuth();
         }
         krogerProductSearch(productsArray[i], key.access_token, i);
@@ -111,6 +111,7 @@ function krogerProductSearch(product, token, index) {
     let productPrice = 0;
     let productName = "Could not be found";
     $.ajax(settings).done(function (response) {
+        console.log(product.name);
         console.log(response);
         if (response.data.length !== 0) {
             if (product.aisle === "") {
@@ -123,7 +124,10 @@ function krogerProductSearch(product, token, index) {
                         productName = response.data[item].description;
                         break;
                     }
+                    productPrice = response.data[0].items[0].price.regular;
+                    productName = response.data[0].description;
                 }
+                
             }
         }
         renderKrogerIngredientCost(productPrice, productName, index)
@@ -339,7 +343,7 @@ function renderPreviousViewed(recipe) {
     }
 
     var previousViewed = $("#previous-views");
-    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth previousRecipe");
+    var buttonNode = $("<button>").addClass("button is-info is-light is-fullwidth  content previousRecipe mx-5");
     var iconSpan = $("<span>").addClass("icon");
     var iconNode = $("<i>").addClass("fas fa-utensils");
     var titleSpan = $("<span>").text(recipe.title);
