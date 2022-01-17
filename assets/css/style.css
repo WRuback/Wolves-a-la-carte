@@ -21,7 +21,8 @@
     background-attachment: fixed;
     background-size:  cover;
     background-color: black;
-    height:100vh;
+    min-height:100vh;
+    height: auto;
 }
 /* Lower the padding around the search bar - Dre */
 .custom-box {
@@ -70,3 +71,14 @@
     animation-name: fade-in;
     animation-duration: 0.5s;
 }
+.previousRecipe{
+    font-size: 1em;
+    white-space: pre-wrap;
+    height:fit-content;
+}
+@media(max-width: 768px) {
+    .reverse-column-mobile {
+      flex-direction: column-reverse;
+      display: flex;
+    }
+  }

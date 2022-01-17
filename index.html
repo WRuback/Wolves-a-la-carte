@@ -18,7 +18,7 @@
     <header>
         <nav class="navbar is-light is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a href="#"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
+                <a href="./index.html"><i class="fab fa-wolf-pack-battalion is-size-1"></i></a>
                 <h1 class="navbar-item is-size-2">a La Carte
                     <span class="icon">
                         <i class="fas fa-utensils"></i>
@@ -26,24 +26,26 @@
                     <span></span>
                 </h1>
             </div>
-            <div class="navbar-item has-dropdown is-hoverable  pl-6 is-size-4 is-align-items-center">
-                <a class="nav-link">
-                    <button class="button is-link is-outlined">Favorite Recipes</button>
-                </a>
-
-                <div class="navbar-dropdown" id="favorites-dropdown">
+            <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable  pl-6 is-size-4 is-align-items-center">
+                    <a class="nav-link">
+                        Favorite Recipes
+                    </a>
+                    <div class="navbar-dropdown" id="favorites-dropdown">
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
     <section class="hero is-fullheight-with-navbar ">
-        <p class="subtitle">
-        <h1 class="title has-text-centered title has-text-white">
-            </p>Find your new favorite recipes!</h1>
+        <div>
+            <h1 class="title has-text-centered title has-text-white m-5">Find your new favorite recipes, and how much
+                they cost!</h1>
+        </div>
 
         <!-- Added Searchbar - Billy -->
-        <div class="box custom-box m-5">
+        <div class="box custom-box mx-5">
             <form action="">
                 <div class="field has-addons">
                     <div class="control is-expanded has-icons-left has-icons-right">
@@ -60,16 +62,18 @@
         </div>
 
         <div class="bg-img"></div>
-
+      
         <!-- Seach bar / landing page - Dre -->
         <section class="section">
             <div class="container">
-                <h1 class="title has-text-centered is-size-4 title has-text-white">Recipes!</h1>
+                <h1 class="title has-text-centered is-size-4 title has-text-white">Wolves Recommended Recipes!</h1>
                 <div class="columns is-centered mt-5 is-8 is-variable">
                     <div class="column is-4-tablet is-3-desktop">
                         <div class="card recipe-card">
                             <div class="card-image is-1by1 is-fullwidth">
-                                <img class="recipe-img is-fullwidth" src="https://spoonacular.com/recipeImages/639450-312x231.jpg" alt="Cinnamon Cookies">
+                                <img class="recipe-img is-fullwidth"
+                                    src="https://spoonacular.com/recipeImages/639450-312x231.jpg"
+                                    alt="Cinnamon Cookies">
                             </div>
                             <div class="card-content">
                                 <div class="content has-text-centered">Cinnamon Cookies</div>
@@ -114,114 +118,178 @@
                     </div>
                 </div>
         </section>
+    </section>
+    <!-- Added static modals for recommended - Cole -->
+    <div id="modal-js-cookie" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
+                <div class="columns is-mobile" id="recipe-display">
 
-        <!-- Added static modals for recommended - Cole -->
-        <div id="modal-js-cookie" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                    <div class="columns is-mobile" id="recipe-display">
-    
-                        <div class="column">
-                            <div>
-                                <ul id="ingredientList"><li>1 teaspoon baking soda</li><li>2 teaspoons cream of tarter</li><li>2 eggs</li><li>2 3/4 cups flour</li><li>1/4 teaspoon salt</li><li>1 cup soft shortening</li><li>1 1/2 cups sugar</li></ul>
-                            </div>
-                            <hr>
-                            <div>
-                                <ul id="ingredientCostList"><li>Kroger® Sugar Cones - 1.99</li><li>Kroger® Original Sour Cream E-Z Squeeze Bottle - 2.19</li><li>Kroger® Cage Free Grade A Large Brown Eggs - 2.99</li><li>Kroger® Bleached Self Rising Enriched Flour - 2.19</li><li>Kroger® Iodized Salt - 0.49</li><li>Kroger® All-Vegetable Shortening - 6.99</li><li>Kroger® Pure Cane Granulated Sugar - 2.49</li></ul>
-                                <hr>
-                                <p id="ingredientCost">Total Cost: 13.85</p>
-                            </div>
+                    <div class="column">
+                        <div>
+                            <ul id="ingredientList">
+                                <li>1 teaspoon baking soda</li>
+                                <li>2 teaspoons cream of tarter</li>
+                                <li>2 eggs</li>
+                                <li>2 3/4 cups flour</li>
+                                <li>1/4 teaspoon salt</li>
+                                <li>1 cup soft shortening</li>
+                                <li>1 1/2 cups sugar</li>
+                            </ul>
                         </div>
-                        <div class="column">
-                            <h1 id="recipe-title">Cinnamon Cookies</h1>
-                            <img src="https://spoonacular.com/recipeImages/639450-556x370.jpg" alt="product" id="recipe-image">
-                            <div class="buttons are-medium">
-                                <a class="button" id="recipe-Url" href="http://www.foodista.com/recipe/JJJYDXTH/cinnamon-cookies">Recipe Instructions</a>
-                                <button class="button has-text-danger" id="favorite-button" data-recipe-id="639450" data-title="Cinnamon Cookies">
-                                    <i class="fas fa-heart" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                        <hr>
+                        <div>
+                            <ul id="ingredientCostList">
+                                <li>Kroger® Sugar Cones - 1.99</li>
+                                <li>Kroger® Original Sour Cream E-Z Squeeze Bottle - 2.19</li>
+                                <li>Kroger® Cage Free Grade A Large Brown Eggs - 2.99</li>
+                                <li>Kroger® Bleached Self Rising Enriched Flour - 2.19</li>
+                                <li>Kroger® Iodized Salt - 0.49</li>
+                                <li>Kroger® All-Vegetable Shortening - 6.99</li>
+                                <li>Kroger® Pure Cane Granulated Sugar - 2.49</li>
+                            </ul>
+                            <hr>
+                            <p id="ingredientCost">Total Cost: 13.85</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h1 id="recipe-title">Cinnamon Cookies</h1>
+                        <img src="https://spoonacular.com/recipeImages/639450-556x370.jpg" alt="product"
+                            id="recipe-image">
+                        <div class="buttons are-medium">
+                            <a class="button" id="recipe-Url"
+                                href="http://www.foodista.com/recipe/JJJYDXTH/cinnamon-cookies">Recipe
+                                Instructions</a>
+                            <button class="button has-text-danger" id="favorite-button" data-recipe-id="639450"
+                                data-title="Cinnamon Cookies">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="modal-close is-large" aria-label="close"></button>
         </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 
-        <div id="modal-js-burger" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                    <div class="columns is-mobile" id="recipe-display">
-    
-                        <div class="column">
-                            <div>
-                                <ul id="ingredientList"><li>1 a handful of fresh baby spinach (or lettuce) cut into inch pieces</li><li>a handful of cherry or grape tomatoes, sliced thinly</li><li>2 hamburger buns</li><li>1 1/2 pounds lean ground beef (90%% lean)</li><li>2 slices pepper jack cheese, cut into 1 inch pieces</li><li>1 pinch a generous of salt</li><li>2 tablespoons spicy mustard mustard+ extra to spread</li><li>16 toothpicks</li></ul>
-                            </div>
-                            <hr>
-                            <div>
-                                <ul id="ingredientCostList"><li>Kroger® Baby Spinach - 4.29</li><li>Kroger® Grape Tomatoes - 2.49</li><li>Kroger® Enriched Rich'n Honey Hamburger Buns - 1.49</li><li>Kroger® 73% Lean Ground Beef - 10.49</li><li>Kroger® Pepper Jack Cheese Slices - 2.29</li><li>Kroger® Iodized Salt - 0.49</li><li>Kroger® Spicy Brown Mustard - 1.25</li><li>Kroger®  Celebration Round Wooden Colored Toothpicks - 1.49</li></ul>
-                                <hr>
-                                <p id="ingredientCost">Total Cost: 23.03</p>
-                            </div>
+    <div id="modal-js-burger" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
+                <div class="columns is-mobile" id="recipe-display">
+
+                    <div class="column">
+                        <div>
+                            <ul id="ingredientList">
+                                <li>1 a handful of fresh baby spinach (or lettuce) cut into inch pieces</li>
+                                <li>a handful of cherry or grape tomatoes, sliced thinly</li>
+                                <li>2 hamburger buns</li>
+                                <li>1 1/2 pounds lean ground beef (90%% lean)</li>
+                                <li>2 slices pepper jack cheese, cut into 1 inch pieces</li>
+                                <li>1 pinch a generous of salt</li>
+                                <li>2 tablespoons spicy mustard mustard+ extra to spread</li>
+                                <li>16 toothpicks</li>
+                            </ul>
                         </div>
-                        <div class="column">
-                            <h1 id="recipe-title">Itty Bitty Burgers</h1>
-                            <img src="https://spoonacular.com/recipeImages/648303-556x370.jpg" alt="product" id="recipe-image">
-                            <div class="buttons are-medium">
-                                <a class="button" id="recipe-Url" href="http://www.foodista.com/recipe/5XQJ4WFT/itty-bitty-burgers">Recipe Instructions</a>
-                                <button class="button has-text-danger" id="favorite-button" data-recipe-id="648303" data-title="Itty Bitty Burgers">
-                                    <i class="fas fa-heart" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                        <hr>
+                        <div>
+                            <ul id="ingredientCostList">
+                                <li>Kroger® Baby Spinach - 4.29</li>
+                                <li>Kroger® Grape Tomatoes - 2.49</li>
+                                <li>Kroger® Enriched Rich'n Honey Hamburger Buns - 1.49</li>
+                                <li>Kroger® 73% Lean Ground Beef - 10.49</li>
+                                <li>Kroger® Pepper Jack Cheese Slices - 2.29</li>
+                                <li>Kroger® Iodized Salt - 0.49</li>
+                                <li>Kroger® Spicy Brown Mustard - 1.25</li>
+                                <li>Kroger® Celebration Round Wooden Colored Toothpicks - 1.49</li>
+                            </ul>
+                            <hr>
+                            <p id="ingredientCost">Total Cost: 23.03</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h1 id="recipe-title">Itty Bitty Burgers</h1>
+                        <img src="https://spoonacular.com/recipeImages/648303-556x370.jpg" alt="product"
+                            id="recipe-image">
+                        <div class="buttons are-medium">
+                            <a class="button" id="recipe-Url"
+                                href="http://www.foodista.com/recipe/5XQJ4WFT/itty-bitty-burgers">Recipe
+                                Instructions</a>
+                            <button class="button has-text-danger" id="favorite-button" data-recipe-id="648303"
+                                data-title="Itty Bitty Burgers">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="modal-close is-large" aria-label="close"></button>
         </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 
-        <div id="modal-js-cheesecake" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
-                    <div class="columns is-mobile" id="recipe-display">
-    
-                        <div class="column">
-                            <div>
-                                <ul id="ingredientList"><li>2 cups sliced almonds</li><li>1/4 cup stevia divided</li><li>½ teaspoon ground cinnamon</li><li>5 tablespoons salted butter melted</li><li>32 ounces cream cheese</li><li>3 large eggs</li><li>2 teaspoons vanilla extract</li><li>16 ounces sour cream</li></ul>
-                            </div>
-                            <hr>
-                            <div>
-                                <ul id="ingredientCostList"><li>Kroger® Honey Roasted Almonds - 5.99</li><li>Kroger® Stevia Zero Calorie Sweetener Blend Packets - 2.79</li><li>Kroger® Ground Cinnamon - 3.69</li><li>Kroger® Salted Butter Sticks - 3.19</li><li>Kroger® Original Cream Cheese - 1.89</li><li>Kroger® Cage Free Grade A Large Brown Eggs - 2.99</li><li>Kroger® Pure Vanilla Extract - 5.99</li><li>Sour Cream E-Z Squeeze Bottle - 2.19</li></ul>
-                                <hr>
-                                <p id="ingredientCost">Total Cost: 20.54</p>
-                            </div>
+    <div id="modal-js-cheesecake" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <h3 class="has-text-centered is-hidden" id="loading-display">Loading...</h3>
+                <div class="columns is-mobile" id="recipe-display">
+
+                    <div class="column">
+                        <div>
+                            <ul id="ingredientList">
+                                <li>2 cups sliced almonds</li>
+                                <li>1/4 cup stevia divided</li>
+                                <li>½ teaspoon ground cinnamon</li>
+                                <li>5 tablespoons salted butter melted</li>
+                                <li>32 ounces cream cheese</li>
+                                <li>3 large eggs</li>
+                                <li>2 teaspoons vanilla extract</li>
+                                <li>16 ounces sour cream</li>
+                            </ul>
                         </div>
-                        <div class="column">
-                            <h1 id="recipe-title">Keto Cheesecake</h1>
-                            <img src="https://spoonacular.com/recipeImages/1096212-556x370.jpg" alt="product" id="recipe-image">
-                            <div class="buttons are-medium">
-                                <a class="button" id="recipe-Url" href="https://www.foodista.com/recipe/ZXF363M4/keto-cheesecake">Recipe Instructions</a>
-                                <button class="button" id="favorite-button" data-recipe-id="1096212" data-title="Keto Cheesecake">
-                                    <i class="fas fa-heart" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                        <hr>
+                        <div>
+                            <ul id="ingredientCostList">
+                                <li>Kroger® Honey Roasted Almonds - 5.99</li>
+                                <li>Kroger® Stevia Zero Calorie Sweetener Blend Packets - 2.79</li>
+                                <li>Kroger® Ground Cinnamon - 3.69</li>
+                                <li>Kroger® Salted Butter Sticks - 3.19</li>
+                                <li>Kroger® Original Cream Cheese - 1.89</li>
+                                <li>Kroger® Cage Free Grade A Large Brown Eggs - 2.99</li>
+                                <li>Kroger® Pure Vanilla Extract - 5.99</li>
+                                <li>Sour Cream E-Z Squeeze Bottle - 2.19</li>
+                            </ul>
+                            <hr>
+                            <p id="ingredientCost">Total Cost: 20.54</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h1 id="recipe-title">Keto Cheesecake</h1>
+                        <img src="https://spoonacular.com/recipeImages/1096212-556x370.jpg" alt="product"
+                            id="recipe-image">
+                        <div class="buttons are-medium">
+                            <a class="button" id="recipe-Url"
+                                href="https://www.foodista.com/recipe/ZXF363M4/keto-cheesecake">Recipe
+                                Instructions</a>
+                            <button class="button" id="favorite-button" data-recipe-id="1096212"
+                                data-title="Keto Cheesecake">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="modal-close is-large" aria-label="close"></button>
         </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="./assets/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
