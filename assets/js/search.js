@@ -1,5 +1,5 @@
 // Used to access the Spoonacular API.
-var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+var spoonKey = "65e87ba760274dc0a6aa192e36144aac"
 // Stores the favorited items from local storage.
 var favoritedItems = [];
 // Stores the recipes previously view in the session, from session storage.
@@ -65,7 +65,7 @@ async function getIngredients(productsArray) {
         }
         krogerProductSearch(productsArray[i], key.access_token, i);
     }
-    $("#ingredientCost").append($("<span>").text(`Total Cost: ${totalPrice}`));
+    $("#ingredientCost").append($("<span>").text(`Approx. Total Cost: ${totalPrice}`));
 }
 
 // Gets the authorization key from Kroger. Needed to access there list.
@@ -126,7 +126,7 @@ function krogerProductSearch(product, token, index) {
         }
         renderKrogerIngredientCost(productPrice, productName, index)
         totalPrice += productPrice;
-        $("#ingredientCost").text(`Total Cost: ${totalPrice.toFixed(2)}`);
+        $("#ingredientCost").text(`Approx. Total Cost: ${totalPrice.toFixed(2)}`);
     }).fail(function () {
         renderKrogerIngredientCost(productPrice, productName, index)
     });
@@ -215,7 +215,7 @@ function renderModal(searchResults) {
     $("#favorite-button").attr("data-recipe-id", searchResults.id);
     $("#favorite-button").attr("data-title", searchResults.title);
     $("#favorite-button").removeClass("has-text-danger");
-    $("#ingredientCost").text("Total Cost: Calc...")
+    $("#ingredientCost").text("Approx. Total Cost: Calc...")
     for (let i = 0; i < favoritedItems.length; i++) {
         if (favoritedItems[i].id == searchResults.id) {
             $("#favorite-button").addClass("has-text-danger");
