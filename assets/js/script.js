@@ -1,5 +1,5 @@
 // Used to access the Spoonacular API.
-var spoonKey = "1c81601448cb47bfa0929677d1e9ea44"
+var spoonKey = "65e87ba760274dc0a6aa192e36144aac"
 // Stores the favorited items from local storage.
 var favoritedItems = [];
 
