@@ -34,13 +34,11 @@ Spoonacular API – https://spoonacular.com/food-api
 Kroger API –  https://developer.kroger.com/sso-redirect/
 
 # Contributors
-Billy – wrubackdev@gmail.com - Handled Spoonacular API call, created Search functionality, search results display, favorite functionality, advanced ingredient search algorithm. 
 
-Cole – Created Modals, Styled Modals, Created static recipe information, and the ReadMe
-
-Dre – Created HTML frameworks, styled and crafted branding of the page. 
-
-Ezequiel - Handled Kroger API call, Modal population, Previous recipe functionality. 
+- Billy – wrubackdev@gmail.com - Handled Spoonacular API call, created Search functionality, search results display, favorite functionality, advanced ingredient search algorithm. 
+- Cole – CWebster_Coding@outlook.com - Created Modals, Styled Modals, Created static recipe information, and the ReadMe
+- Dre – D.mclenan@gmail.com - Created HTML frameworks, styled and crafted branding of the page. 
+- Ezequiel - Handled Kroger API call, Modal population, Previous recipe functionality. 
 
 ## License
 
