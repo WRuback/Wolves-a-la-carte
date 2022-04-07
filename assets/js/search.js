@@ -171,8 +171,8 @@ async function renderRecipes(searchResults, startIndex) {
             <div class="content has-text-centered">${recipe.title}</div>
         </div>
         <footer class="card-footer">
-            <a href="#" class="card-footer-item js-modal-trigger"
-                data-target="modal-js-example" data-recipe-id=${recipe.id}>View</a>
+            <a href="#" disabled class="card-footer-item js-modal-trigger"
+                data-target="modal-js-example" data-recipe-id=${recipe.id}>View (Disabled)</a>
         </footer>
     </div>
     </div>`);
@@ -180,15 +180,15 @@ async function renderRecipes(searchResults, startIndex) {
         card = await new Promise(resolve => setTimeout(resolve, 150));
     }
     $("#scroll-buttons-bottom").removeClass("is-hidden");
-    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-        const modal = $trigger.getAttribute("data-target");
-        const $target = document.getElementById(modal);
+    // (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    //     const modal = $trigger.getAttribute("data-target");
+    //     const $target = document.getElementById(modal);
 
-        $trigger.addEventListener('click', (event) => {
-            $target.classList.add('is-active');
-            loadRecipeModal(event.target);
-        });
-    });
+    //     $trigger.addEventListener('click', (event) => {
+    //         $target.classList.add('is-active');
+    //         loadRecipeModal(event.target);
+    //     });
+    // });
 }
 
 // Changes the scroll page display.
